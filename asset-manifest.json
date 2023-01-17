@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/rizzy-bodycraft-record/static/css/main.073c9b0a.css",
+    "main.js": "/rizzy-bodycraft-record/static/js/main.d153a5eb.js",
+    "static/js/787.f79423e8.chunk.js": "/rizzy-bodycraft-record/static/js/787.f79423e8.chunk.js",
+    "static/media/logo.svg": "/rizzy-bodycraft-record/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/rizzy-bodycraft-record/index.html",
+    "main.073c9b0a.css.map": "/rizzy-bodycraft-record/static/css/main.073c9b0a.css.map",
+    "main.d153a5eb.js.map": "/rizzy-bodycraft-record/static/js/main.d153a5eb.js.map",
+    "787.f79423e8.chunk.js.map": "/rizzy-bodycraft-record/static/js/787.f79423e8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.d153a5eb.js"
+  ]
+}
