@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Title } from "../../components/Title";
+import { Title } from "../../components/Title/Title";
 import { useInput } from "../../hooks/useInput";
 import "./Login.css";
 
