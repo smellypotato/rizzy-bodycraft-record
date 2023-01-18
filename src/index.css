@@ -1,3 +1,11 @@
+html {
+    font-size: 4px;
+}
+body {
+    background: url("./assets/background.jpeg") var(--bg_img_setting);
+    background-size: cover;
+    height: 100vh;
+}
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +17,10 @@
 * a {
     text-decoration: none;
     color: inherit;
-    cursor: inherit;
+    cursor: pointer;
+}
+button {
+    cursor: pointer;
 }
 ::-webkit-scrollbar {
     display: none;
@@ -24,4 +35,11 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+input {
+    background-color: var(--color_white);
+    border-radius: 8px;
+    border: 1px solid var(--color_prim);
+    font-size: 3rem;
+    padding: 1rem 2rem;
 }

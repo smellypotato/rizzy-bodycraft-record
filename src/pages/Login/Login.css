@@ -1,0 +1,35 @@
+#login section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: clamp(250px, 50vw, 500px);
+    margin: 0 auto;
+}
+#login input {
+    width: 100%;
+}
+#login-forget {
+    align-self: flex-start;
+    background: none;
+    margin-left: 2rem;
+    color: var(--color_prim);
+    font-size: 3rem;
+}
+#login-buttons {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 10%;
+}
+#login-buttons > button {
+    border-radius: 8px;
+    padding: 2rem 0;
+    font-size: 3rem;
+    color: var(--color_white);
+}
+#login-buttons > button#user {
+    background-color: var(--color_prim);
+}
+#login-buttons > button#admin {
+    background-color: var(--color_prim_light);
+}
