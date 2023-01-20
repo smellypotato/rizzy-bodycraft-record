@@ -19,7 +19,38 @@
     width: 20rem;
     display: flex;
     justify-content: center;
+    box-shadow: var(--shadow_small);
 }
 #dashboard #years .years-button#current {
     background-color: var(--color_prim_light);
+}
+#dashboard #years .years-button:active {
+    box-shadow: 0 0 0;
+}
+#dashboard .main-button {
+    font-size: 4rem;
+    padding: 4rem 6rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow_small);
+    background-color: var(--color_prim_light);
+    color: var(--color_white);
+    display: flex;
+    column-gap: 6rem;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+}
+#dashboard .main-button:active {
+    box-shadow: 0 0 0;
+}
+#dashboard .main-button div {
+    width: 18px;
+    aspect-ratio: 1 / 1;
+    background-size: contain;
+}
+#dashboard .main-button div#pen {
+    background: url("../../../assets/pen.svg") var(--bg_img_setting);
+}
+#dashboard .main-button div#record {
+    background: url("../../../assets/record.svg") var(--bg_img_setting);
 }

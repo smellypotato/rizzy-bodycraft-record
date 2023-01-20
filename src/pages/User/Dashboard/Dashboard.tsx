@@ -15,6 +15,8 @@ export const Dashboard = () => {
                     <button className="years-button" id={ selectedYear === 2022 ? "current" : ""} onClick={ () => setSelectedYear(2022) }>2022</button>
                 </div>
             </section>
+            <button className="main-button">Record Now<div id="pen"/></button>
+            <button className="main-button">My Record<div id="record"/></button>
         </main>
     )
 }
