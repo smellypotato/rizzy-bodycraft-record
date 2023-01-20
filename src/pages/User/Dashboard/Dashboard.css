@@ -46,7 +46,7 @@
 #dashboard .main-button div {
     width: 18px;
     aspect-ratio: 1 / 1;
-    background-size: contain;
+    background-size: var(--icon_size);
 }
 #dashboard .main-button div#pen {
     background: url("../../../assets/pen.svg") var(--bg_img_setting);
