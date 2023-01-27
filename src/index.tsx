@@ -4,6 +4,9 @@ import './index.css';
 import './commonCSS/root.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import Firebase from './firebase';
+
+Firebase.init();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>

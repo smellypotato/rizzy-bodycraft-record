@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { Title } from "../../components/Title/Title";
+import Firebase from "../../firebase";
 import { useInput } from "../../hooks/useInput";
 import "./Login.css";
 
@@ -11,6 +12,10 @@ export const Login = () => {
         set(e.currentTarget.value);
     }, []);
 
+    const onLogin = useCallback(() => {
+        Firebase.instance.login(username, password);
+    }, [username, password]);
+
     return (
         <main id="login">
             <Title />
@@ -19,7 +24,7 @@ export const Login = () => {
                 <input type="text" value={ password } placeholder="Password" onChange={ (e) => onInput(setPassword, e) } />
                 <a id="login-forget">Forget password?</a>
                 <div id="login-buttons">
-                    <button id="user">Login</button><button id="admin">Admin Login</button>
+                    <button id="user" onClick={ onLogin }>Login</button><button id="admin" onClick={ onLogin }>Admin Login</button>
                 </div>
             </section>
         </main>

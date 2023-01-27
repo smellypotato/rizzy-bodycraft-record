@@ -47,3 +47,8 @@ input {
     font-size: 3rem;
     padding: 1rem 2rem;
 }
+h3 {
+    color: var(--color_prim_light);
+    font-size: 4rem;
+    font-weight: bold;
+}
