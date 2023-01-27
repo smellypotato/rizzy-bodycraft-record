@@ -8,11 +8,6 @@
     row-gap: 2.5rem;
     max-width: 75vw;
 }
-#exercise_record h3 {
-    color: var(--color_prim_light);
-    font-size: 4rem;
-    font-weight: bold;
-}
 #exercise_record #record_table {
     display: grid;
     grid-template-columns: auto 1fr;

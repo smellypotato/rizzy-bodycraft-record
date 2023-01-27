@@ -1,0 +1,33 @@
+#student_list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#student_list #request {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: clamp(400px, 50vw, 800px);
+    row-gap: 1rem;
+}
+#student_list #request .pending_account {
+    display: grid;
+    grid-template-columns: 1fr 3fr 16px 16px;
+    grid-column-gap: 2rem;
+    font-size: 4rem;
+    width: 100%;
+}
+.pending_account button {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+.pending_account .approve_icon {
+    background: url(../../../assets/circle.svg) var(--bg_img_setting);
+    background-size: cover;
+    filter: var(--filter_green);
+}
+.pending_account .decline_icon {
+    background: url(../../../assets/cross.svg) var(--bg_img_setting);
+    background-size: cover;
+    filter: var(--filter_red);
+}

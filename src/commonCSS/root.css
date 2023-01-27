@@ -4,6 +4,9 @@
     --color_white: #FFFFFF;
     --color_contrast: #407CAA;
 
+    --filter_red: invert(22%) sepia(97%) saturate(1228%) hue-rotate(328deg) brightness(101%) contrast(95%);
+    --filter_green: invert(70%) sepia(84%) saturate(409%) hue-rotate(60deg) brightness(84%) contrast(87%);
+
     --icon_size: contain;
     --bg_img_setting: no-repeat center;
     --shadow_small: 2px 2px 2px rgba(0 0 0 / 0.25);
