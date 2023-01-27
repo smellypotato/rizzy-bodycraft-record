@@ -1,6 +1,6 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { Auth, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
-import { collection, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { Auth, getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import { collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
@@ -53,11 +53,21 @@ export default class Firebase {
     }
 
     async logout() {
-        await signOut(Firebase.instance.auth);
+        await signOut(this.auth);
     }
 
     onAuthStateChanged(callback: (user: User | null) => void) {
         return onAuthStateChanged(this.auth, user => callback(user));
+    }
+
+    approvePendingAccount(email: string) {
+        const actionCodeSettings = {
+            // URL you want to redirect back to. The domain (www.example.com) for this
+            // URL must be in the authorized domains list in the Firebase Console.
+            url: 'http://localhost:3000',
+            handleCodeInApp: true
+        };
+        sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => console.log("success")).catch((err) => console.log("failed", err));
     }
 
     // firestore
@@ -70,7 +80,7 @@ export default class Firebase {
         })
     }
 
-    async syncPendingAccounts() {
-
+    async removePendingAccount(id: string) {
+        await deleteDoc(doc(this.firestore, "application", id));
     }
 }

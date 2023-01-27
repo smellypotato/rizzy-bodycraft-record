@@ -1,5 +1,4 @@
-import { collection, onSnapshot, Unsubscribe } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Title } from "../../../components/Title/Title";
 import Firebase, { PendingApplcation } from "../../../firebase";
 import "./StudentList.css";
@@ -15,6 +14,15 @@ export const StudentList = () => {
         }
     }, [])
 
+    const approvePending = useCallback(async (application: PendingApplcation) => {
+        Firebase.instance.approvePendingAccount(application.email);
+        // await Firebase.instance.removePendingAccount(id);
+    }, []);
+
+    const declinePending = useCallback(async (id: string) => {
+        await Firebase.instance.removePendingAccount(id);
+    }, []);
+
     return (
         <main id="student_list">
             <Title />
@@ -24,8 +32,8 @@ export const StudentList = () => {
                         <div key={ application.id } className="pending_account">
                             <div>{ application.name }</div>
                             <div>{ application.email }</div>
-                            <button className="approve_icon" onClick={ () => {} } />
-                            <button className="decline_icon" onClick={ () => {} } />
+                            <button className="approve_icon" onClick={ () => approvePending(application) } />
+                            <button className="decline_icon" onClick={ () => declinePending(application.id) } />
                         </div>
                     ))
 
