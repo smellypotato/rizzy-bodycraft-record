@@ -1,5 +1,5 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { Auth, getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import { Auth, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 import { collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -53,7 +53,7 @@ export default class Firebase {
     }
 
     async logout() {
-        await signOut(this.auth);
+        await signOut(Firebase.instance.auth);
     }
 
     onAuthStateChanged(callback: (user: User | null) => void) {
@@ -68,6 +68,10 @@ export default class Firebase {
             handleCodeInApp: true
         };
         sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => console.log("success")).catch((err) => console.log("failed", err));
+    }
+
+    isAnnoymousAccount() {
+        return isSignInWithEmailLink(this.auth, window.location.href)
     }
 
     // firestore

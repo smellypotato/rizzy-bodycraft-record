@@ -14,9 +14,13 @@ const App = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const fromEmailLink = Firebase.instance.isAnnoymousAccount();
         const unSubscribeAuthStateChange = Firebase.instance.onAuthStateChanged((user) => {
             console.log("auth state changed", user);
-            if (user) navigate(`/${path}`);
+            if (user) {
+                if (fromEmailLink) {}
+                else navigate(`/${path}`);
+            }
             else navigate("/login")
         })
         return () => {
