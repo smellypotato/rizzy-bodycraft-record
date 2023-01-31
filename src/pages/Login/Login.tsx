@@ -5,15 +5,15 @@ import { useInput } from "../../hooks/useInput";
 import "./Login.css";
 
 export const Login = () => {
-    const [username, setUsername] = useInput("");
-    const [password, setPassword] = useInput("");
+    const [username, setUsername] = useInput("hksahenry@yahoo.com.hk");
+    const [password, setPassword] = useInput("hksa13968629");
 
     const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
         set(e.currentTarget.value);
     }, []);
 
     const onLogin = useCallback(() => {
-        Firebase.instance.login(username, password);
+        Firebase.instance.login({ email: username, password: password });
     }, [username, password]);
 
     return (

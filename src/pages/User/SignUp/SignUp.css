@@ -1,0 +1,31 @@
+#signup {
+    width: clamp(400px, 40vw, 600px);
+    margin: 0 auto;
+}
+
+#signup, #signup section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#signup section, #signup input, #signup button {
+    width: 100%;
+}
+#signup button {
+    border-radius: 8px;
+    padding: 2rem 4rem;
+    font-size: 3rem;
+    color: var(--color_white);
+    background-color: var(--color_prim);
+}
+#signup #signup_details #signup_row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-column-gap: 2rem;
+    font-size: 4rem;
+    align-items: center;
+}
+#signup #signup_details #signup_row input {
+    width: 100%;
+}

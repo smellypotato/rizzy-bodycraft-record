@@ -1,6 +1,6 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { Auth, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
-import { collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
+import { collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
@@ -44,12 +44,42 @@ export default class Firebase {
 
     // auth
 
-    async login(email: string, password: string) {
-        await signInWithEmailAndPassword(this.auth, email, password).then(credential => {
-            console.log(credential);
-        }).catch((err: { code: string, message: string } ) => {
-            console.error(err.code);
-        });
+    async signup(email: string, password: string, name: string) {
+        updatePassword(this.auth.currentUser!, password).then(() => {
+            this.updateUserProfile({ email, name });
+        }).catch(err => console.error(err));
+    }
+
+    async login(args: { email: string, password?: string }): Promise<boolean> {
+        const { email, password } = args;
+        if (email !== undefined) {
+            if (password !== undefined) {
+                return await new Promise((resolve, reject) => {
+                    signInWithEmailAndPassword(this.auth, email, password).then(credential => {
+                        console.log(credential);
+                        resolve(true);
+                    }).catch((err: { code: string, message: string } ) => {
+                        console.error(err.code);
+                        reject(false);
+                    });
+                });
+            }
+            else {
+                console.log(email);
+                return await new Promise((resolve, reject) =>
+                    signInWithEmailLink(this.auth, email, window.location.href).then(result => {
+                        console.log(result);
+                        resolve(true);
+                    }).catch((err: { code: string, message: string }) => {
+                        // auth/invalid-email
+                        // auth/invalid-action-code when link used to login
+                        console.error(err.code, err.message);
+                        reject(false)
+                    })
+                );
+            }
+        }
+        return false;
     }
 
     async logout() {
@@ -86,5 +116,16 @@ export default class Firebase {
 
     async removePendingAccount(id: string) {
         await deleteDoc(doc(this.firestore, "application", id));
+    }
+
+    async checkNewAccount(email: string) {
+        return !(await getDoc(doc(this.firestore, "user-profile", email))).exists();
+    }
+
+    async updateUserProfile(profile: { email: string, name: string }) {
+        await setDoc(doc(this.firestore, "user-profile", profile.email), {
+            name: profile.name,
+            email: profile.email
+        })
     }
 }
