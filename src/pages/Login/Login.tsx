@@ -12,9 +12,9 @@ export const Login = () => {
         set(e.currentTarget.value);
     }, []);
 
-    const onLogin = useCallback(() => {
+    const onLogin = () => {
         Firebase.instance.login({ email: username, password: password });
-    }, [username, password]);
+    };
 
     return (
         <main id="login">

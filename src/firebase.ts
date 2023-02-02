@@ -1,7 +1,7 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
-import { collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
-
+import { addDoc, collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, where } from "firebase/firestore";
+import { optionConverter, PendingApplcation, Option, categoryConverter } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
   authDomain: "rizzy-bodycraft-record.firebaseapp.com",
@@ -12,11 +12,10 @@ const firebaseConfig = {
   measurementId: "G-SKFHESV2J6"
 };
 
-export type PendingApplcation = {
-    id: string,
-    name: string,
-    email: string
-    // apply_date:
+enum COLLECTION {
+    CATEGORY = "category",
+    USER_PROFILE = "user-profile",
+    APPLICATION = "application"
 }
 
 export default class Firebase {
@@ -107,7 +106,7 @@ export default class Firebase {
     // firestore
 
     onPendingAccountsChange(callback: (pendings: Array<PendingApplcation>) => void) {
-        return onSnapshot(collection(this.firestore, "application"), collection => {
+        return onSnapshot(collection(this.firestore, COLLECTION.APPLICATION), collection => {
             let pendings: Array<PendingApplcation> = [];
             collection.forEach(application => pendings.push(Object.assign({ id: application.id }, application.data() as { name: string, email: string })));
             callback(pendings)
@@ -115,17 +114,62 @@ export default class Firebase {
     }
 
     async removePendingAccount(id: string) {
-        await deleteDoc(doc(this.firestore, "application", id));
+        await deleteDoc(doc(this.firestore, COLLECTION.APPLICATION, id));
     }
 
     async checkNewAccount(email: string) {
-        return !(await getDoc(doc(this.firestore, "user-profile", email))).exists();
+        return !(await getDoc(doc(this.firestore, COLLECTION.USER_PROFILE, email))).exists();
     }
 
     async updateUserProfile(profile: { email: string, name: string }) {
-        await setDoc(doc(this.firestore, "user-profile", profile.email), {
+        await setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, profile.email), {
             name: profile.name,
             email: profile.email
         })
+    }
+
+    async getCategories() {
+        let categories: Array<any> = [];
+        await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
+            categories.push(cat.data());
+        }));
+        return categories;
+    }
+
+    // async getOptions(categoryId: string) {
+    //     let options: Array<Option> = [];
+    //     await getDocs(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter))
+    //         .then(opts => opts.forEach(
+    //             opt => options.push(opt.data())
+    //         ));
+    //     return options;
+    // }
+
+    onOptionUpdate(categoryId: string, onUpdate: (options: Array<Option>) => void) {
+        return onSnapshot(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), opts => {
+            let options: Array<Option> = [];
+            opts.forEach(opt => options.push(opt.data()));
+            onUpdate(options);
+        })
+    }
+
+    async addOption(categoryId: string, optionLabel: string, choices?: Array<string>) {
+        if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options"),where("title", "==", optionLabel)))).empty) {
+            console.warn("label exists");
+            return;
+        }
+        let obj = {
+            id: "",
+            title: optionLabel,
+            isChoices: choices !== undefined,
+            choices: choices
+        }
+        !obj.isChoices && delete obj.choices;
+        await addDoc(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), obj);
+
+    }
+
+    async deleteOption(categoryId: string, optionId: string) {
+        await deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", optionId))
     }
 }

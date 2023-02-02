@@ -21,13 +21,17 @@ const App = () => {
         if (fromEmailLink) navigate(`/signup${window.location.search}`);
         const unSubscribeAuthStateChange = Firebase.instance.onAuthStateChanged((user) => {
             console.log("auth state changed", user);
+            console.log("from email link", fromEmailLink);
             if (user && !fromEmailLink) {
-                navigate(`/${path}`);
                 setLoggedIn(true);
+                
+                navigate(`/${path}`);
             }
             else if (!fromEmailLink) {
-                navigate("/login");
                 setLoggedIn(false);
+
+                console.log("to login");
+                navigate("/login");
             }
         })
         return () => {

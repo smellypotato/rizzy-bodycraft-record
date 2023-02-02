@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Title } from "../../../components/Title/Title";
-import Firebase, { PendingApplcation } from "../../../firebase";
+import Firebase from "../../../firebase";
+import { PendingApplcation } from "../../../type";
 import "./StudentList.css";
 
 export const StudentList = () => {
