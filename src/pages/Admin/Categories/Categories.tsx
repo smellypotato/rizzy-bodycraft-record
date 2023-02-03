@@ -3,12 +3,14 @@ import { DropdownMenu } from "../../../components/DropdownMenu/DropdownMenu";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
 import "./Categories.css";
-import { Option } from "../../../type";
+import { Category, Option } from "../../../type";
 import { AddInputPanel } from "../../../components/AddPanel/AddInputPanel";
 import { AddChoicePanel } from "../../../components/AddPanel/AddChoicePanel";
+import { AddCategoryPanel } from "../../../components/AddPanel/AddCategoryPanel";
+import { Unsubscribe } from "@firebase/firestore";
 export const Categories = () => {
 
-    const [categories, setCategories] = useState<Array<{ label: string, id: string }>>([]);
+    const [categories, setCategories] = useState<Array<Category>>([]);
     const [categoryId, setCategoryId] = useState<string>();
     const [activeDropdown, setActiveDropdown] = useState<string>();
     const [options, setOptions] = useState<Array<Option>>([]);
@@ -25,11 +27,9 @@ export const Categories = () => {
     }, [])
 
     useEffect(() => {
-        Firebase.instance.getCategories().then(categories =>
-            setCategories(categories.map(category => {
-                return { label: category.title, id: category.id }
-            }))
-        );
+        let unSubscribeCategoryUpdate = Firebase.instance.onCategoryUpdate((categories) => setCategories(categories))
+
+        return () => unSubscribeCategoryUpdate();
     }, [])
 
     // useEffect(() => {
@@ -37,12 +37,15 @@ export const Categories = () => {
     // }, [categoryId]);
 
     useEffect(() => {
-        if (categoryId) Firebase.instance.onOptionUpdate(categoryId, (options) => setOptions(options));
+        let unSubscribeOptionUpdate: Unsubscribe;
+        if (categoryId) unSubscribeOptionUpdate = Firebase.instance.onOptionUpdate(categoryId, (options) => setOptions(options));
+
+        return () => unSubscribeOptionUpdate && unSubscribeOptionUpdate();
     }, [categoryId])
 
-    const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
-        set(e.currentTarget.value);
-    }, []);
+    // const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
+    //     set(e.currentTarget.value);
+    // }, []);
 
     const optionRow = useCallback((details: Option) => {
         return (
@@ -62,7 +65,7 @@ export const Categories = () => {
             <Title />
             <section id="content">
                 <div id="dropdown_big">
-                    <DropdownMenu onSelect={ setCategoryId } opened={ activeDropdown === "category"} onOpen={ () => setActiveDropdown("category") } onClose={ () => setActiveDropdown(undefined) } default={ "選擇分類" } current={ categories.find(cat => cat.id === categoryId)?.label } choices={ categories } />
+                    <DropdownMenu onSelect={ setCategoryId } onAdd={ () => setAddModal(<AddCategoryPanel close={ () => setAddModal(undefined)} />) } opened={ activeDropdown === "category"} onOpen={ () => setActiveDropdown("category") } onClose={ () => setActiveDropdown(undefined) } default={ "選擇分類" } current={ categories.find(cat => cat.id === categoryId)?.title } choices={ categories.map(category => { return { id: category.id, label: category.title } }) } />
                 </div>
                 { options.map(option => optionRow(option)) }
                 { categoryId && <button className="add" onClick={ () => setAddModal(<AddChoicePanel categoryId={ categoryId } close={ () => setAddModal(undefined) } />) }>新增選項 ＋</button> }

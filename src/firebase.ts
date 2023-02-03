@@ -1,7 +1,7 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, where } from "firebase/firestore";
-import { optionConverter, PendingApplcation, Option, categoryConverter } from "./type";
+import { optionConverter, PendingApplcation, Option, categoryConverter, Category } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
   authDomain: "rizzy-bodycraft-record.firebaseapp.com",
@@ -128,13 +128,22 @@ export default class Firebase {
         })
     }
 
-    async getCategories() {
-        let categories: Array<any> = [];
-        await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
-            categories.push(cat.data());
-        }));
-        return categories;
+    onCategoryUpdate(onUpdate: (categories: Array<Category>) => void) {
+        return onSnapshot(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), cats => {
+            let categories: Array<Category> = [];
+            cats.forEach(cat => categories.push(cat.data()));
+            cats.docChanges().forEach(change => console.log(change.type, change.doc.data()));
+            onUpdate(categories);
+        })
     }
+    //
+    // async getCategories() {
+    //     let categories: Array<any> = [];
+    //     await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
+    //         categories.push(cat.data());
+    //     }));
+    //     return categories;
+    // }
 
     // async getOptions(categoryId: string) {
     //     let options: Array<Option> = [];
@@ -144,6 +153,18 @@ export default class Firebase {
     //         ));
     //     return options;
     // }
+
+    async addCategory(categoryLabel: string) {
+        if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY),where("title", "==", categoryLabel)))).empty) {
+            console.warn("label exists");
+            return;
+        }
+        let obj = {
+            id: "",
+            title: categoryLabel
+        }
+        await addDoc(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), obj);
+    }
 
     onOptionUpdate(categoryId: string, onUpdate: (options: Array<Option>) => void) {
         return onSnapshot(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), opts => {

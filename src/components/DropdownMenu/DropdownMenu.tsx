@@ -14,7 +14,7 @@ export const DropdownMenu = (props: { onSelect: (value: string, e: React.MouseEv
                             { choice.allowRemove ? <button className="delete" /> : <div />}
                         </button>
                     )}
-                    { props.onAdd && <button className="choice">新增 ＋</button> }
+                    { props.onAdd && <button className="choice" onClick={ props.onAdd }><div /><div>新增 ＋</div><div /></button> }
                 </div>
             }
         </div>

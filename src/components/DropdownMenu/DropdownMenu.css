@@ -38,7 +38,6 @@
 }
 [class^="dropdown_menu"] #choices .choice {
     width: 100%;
-    height: 7.5rem;
     background-color: var(--color_white);
 }
 [class^="dropdown_menu"] #choices .choice:hover {

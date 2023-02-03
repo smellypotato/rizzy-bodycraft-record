@@ -14,6 +14,7 @@ export type Option = {
     choices?: Array<string>
 }
 export type Category = {
+    id: string,
     title: string
 }
 
