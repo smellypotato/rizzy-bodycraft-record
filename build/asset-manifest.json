@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/rizzy-bodycraft-record/static/css/main.8025c03c.css",
+    "main.js": "/rizzy-bodycraft-record/static/js/main.fbadf45c.js",
+    "static/media/background.jpeg": "/rizzy-bodycraft-record/static/media/background.a7bcaa6889b5a63c5065.jpeg",
+    "static/media/circle.svg": "/rizzy-bodycraft-record/static/media/circle.99c69882b11e858f59dd.svg",
+    "index.html": "/rizzy-bodycraft-record/index.html",
+    "static/media/pen.svg": "/rizzy-bodycraft-record/static/media/pen.2c1e2383dc56d010716d.svg",
+    "static/media/record.svg": "/rizzy-bodycraft-record/static/media/record.0fa16f4c5691fa7f106e.svg",
+    "static/media/cross.svg": "/rizzy-bodycraft-record/static/media/cross.fd7df6a76a05848d8d7a.svg",
+    "static/media/arrow_down.svg": "/rizzy-bodycraft-record/static/media/arrow_down.7a6fb7813ea3115ed4ec.svg",
+    "main.8025c03c.css.map": "/rizzy-bodycraft-record/static/css/main.8025c03c.css.map",
+    "main.fbadf45c.js.map": "/rizzy-bodycraft-record/static/js/main.fbadf45c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8025c03c.css",
+    "static/js/main.fbadf45c.js"
+  ]
+}
