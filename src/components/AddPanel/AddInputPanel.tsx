@@ -1,17 +1,9 @@
-import { useCallback, useState } from "react";
-import Firebase from "../../firebase";
+import { useAddPanel } from "../../hooks/useAddPanel";
 import "./AddPanel.css";
 
 export const AddInputPanel = (props: { categoryId: string, close: () => void }) => {
-    const [label, setLabel] = useState("");
 
-    const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
-        set(e.currentTarget.value);
-    }, []);
-
-    const addOption = useCallback((label: string) => {
-        Firebase.instance.addOption(props.categoryId, label);
-    }, []);
+    const [label, setLabel, onInput, addOption] = useAddPanel();
 
     return (
         <dialog id="add_panel" open>
@@ -22,7 +14,7 @@ export const AddInputPanel = (props: { categoryId: string, close: () => void }) 
                     <input value={ label } onChange={ (e) => onInput(setLabel, e) }/>
                 </div>
                 <div>
-                    <button onClick={ () => { addOption(label); props.close(); } }>確定</button>
+                    <button onClick={ () => { addOption(props.categoryId, label); props.close(); } }>確定</button>
                     <button onClick={ () => props.close() }>取消</button>
                 </div>
             </section>

@@ -5,6 +5,7 @@ import Firebase from "../../../firebase";
 import "./Categories.css";
 import { Option } from "../../../type";
 import { AddInputPanel } from "../../../components/AddPanel/AddInputPanel";
+import { AddChoicePanel } from "../../../components/AddPanel/AddChoicePanel";
 export const Categories = () => {
 
     const [categories, setCategories] = useState<Array<{ label: string, id: string }>>([]);
@@ -64,7 +65,7 @@ export const Categories = () => {
                     <DropdownMenu onSelect={ setCategoryId } opened={ activeDropdown === "category"} onOpen={ () => setActiveDropdown("category") } onClose={ () => setActiveDropdown(undefined) } default={ "選擇分類" } current={ categories.find(cat => cat.id === categoryId)?.label } choices={ categories } />
                 </div>
                 { options.map(option => optionRow(option)) }
-                { categoryId && <button className="add" onClick={ () => {} }>新增選項 ＋</button> }
+                { categoryId && <button className="add" onClick={ () => setAddModal(<AddChoicePanel categoryId={ categoryId } close={ () => setAddModal(undefined) } />) }>新增選項 ＋</button> }
                 { categoryId && <button className="add" onClick={ () => setAddModal(<AddInputPanel categoryId={ categoryId } close={ () => setAddModal(undefined) } />) }>新增輸入 ＋</button> }
             </section>
             { addModal && addModal }
