@@ -50,4 +50,5 @@
     background: url(../../assets/cross.svg) var(--bg_img_setting);
     background-size: contain;
     filter: var(--filter_red);
+    height: 100%;
 }

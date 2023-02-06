@@ -11,6 +11,7 @@
 }
 #categories #content #dropdown_big {
     width: clamp(400px, 30vw, 600px);
+    position: relative;
 }
 
 #categories #content .option {
@@ -38,4 +39,26 @@
     background: none;
     height: 30px;
     width: 50%;
+}
+#categories #dropdown_big > button {
+    width: 100px;
+    height: 7.5rem;
+    position: absolute;
+    right: -120px;
+    top: 0;
+    background: var(--color_red);
+    border-radius: 4px;
+    font-size: 4rem;
+    color: var(--color_white);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1rem;
+}
+#categories #dropdown_big > button .bin {
+    background: url(../../../assets/bin.svg) var(--bg_img_setting);
+    background-size: contain;
+    height: 4rem;
+    aspect-ratio: 1 / 1;
 }

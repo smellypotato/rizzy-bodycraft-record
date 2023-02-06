@@ -1,6 +1,6 @@
 import "./DropdownMenu.css";
 
-export const DropdownMenu = (props: { onSelect: (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void, onOpen: () => void, onClose: () => void, onAdd?: () => void, opened: boolean, default?: string, current?: string, choices: Array<{ label: string, id: string, allowRemove?: boolean }> }) => {
+export const DropdownMenu = (props: { onSelect: (value: string, e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => void, onOpen: () => void, onClose: () => void, onAdd?: () => void, opened: boolean, default?: string, current?: string, choices: Array<{ label: string, id: string, onRemove?: () => (void | Promise<void>) }> }) => {
     return (
         <div className={ `dropdown_menu${props.opened ? "_open" : ""}` }>
             <button id="current" onClick={ props.opened? (e) => { props.onClose(); e.stopPropagation(); } : (e) => { props.onOpen(); e.stopPropagation(); } }><div />{ props.current || props.default }<div className="arrow"/></button>
@@ -11,7 +11,7 @@ export const DropdownMenu = (props: { onSelect: (value: string, e: React.MouseEv
                             onClick={ (e) => props.onSelect(choice.id, e) }>
                             <div />
                             { choice.label }
-                            { choice.allowRemove ? <button className="delete" /> : <div />}
+                            { choice.onRemove ? <div className="delete" onClick={ choice.onRemove } /> : <div />}
                         </button>
                     )}
                     { props.onAdd && <button className="choice" onClick={ props.onAdd }><div /><div>新增 ＋</div><div /></button> }

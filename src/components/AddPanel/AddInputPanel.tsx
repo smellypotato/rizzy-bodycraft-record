@@ -1,9 +1,9 @@
 import { useAddPanel } from "../../hooks/useAddPanel";
 import "./AddPanel.css";
 
-export const AddInputPanel = (props: { categoryId: string, close: () => void }) => {
+export const AddInputPanel = (props: { categoryId: string, close: () => void, label?: string }) => {
 
-    const [label, setLabel, onInput, addOption] = useAddPanel();
+    const [label, setLabel, onInput, addOption] = useAddPanel(props.label);
 
     return (
         <dialog id="add_panel" open>

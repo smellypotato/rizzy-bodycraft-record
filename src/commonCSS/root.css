@@ -4,6 +4,7 @@
     --color_white: #FFFFFF;
     --color_contrast: #407CAA;
     --color_background_grey: #F6F7F9;
+    --color_red: #BC333C;
 
     --filter_red: invert(22%) sepia(97%) saturate(1228%) hue-rotate(328deg) brightness(101%) contrast(95%);
     --filter_green: invert(70%) sepia(84%) saturate(409%) hue-rotate(60deg) brightness(84%) contrast(87%);

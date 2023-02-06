@@ -1,6 +1,6 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { optionConverter, PendingApplcation, Option, categoryConverter, Category } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
@@ -128,13 +128,13 @@ export default class Firebase {
         })
     }
 
-    onCategoryUpdate(onUpdate: (categories: Array<Category>) => void) {
-        return onSnapshot(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), cats => {
+    onCategoryUpdate(onUpdate: (categories: Array<Category>, update: Array<DocumentChange<Category>>) => void) {
+        let unSubscribeCategoryUpdate = onSnapshot(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), cats => {
             let categories: Array<Category> = [];
             cats.forEach(cat => categories.push(cat.data()));
-            cats.docChanges().forEach(change => console.log(change.type, change.doc.data()));
-            onUpdate(categories);
+            onUpdate(categories, cats.docChanges());
         })
+        return unSubscribeCategoryUpdate;
     }
     //
     // async getCategories() {
@@ -166,6 +166,13 @@ export default class Firebase {
         await addDoc(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), obj);
     }
 
+    async deleteCategory(categoryId: string) {
+        await getDocs(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options"))
+            .then(opts => opts.forEach(opt => deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", opt.id))));
+
+        await deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId))
+    }
+
     onOptionUpdate(categoryId: string, onUpdate: (options: Array<Option>) => void) {
         return onSnapshot(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), opts => {
             let options: Array<Option> = [];
@@ -174,23 +181,41 @@ export default class Firebase {
         })
     }
 
-    async addOption(categoryId: string, optionLabel: string, choices?: Array<string>) {
-        if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options"),where("title", "==", optionLabel)))).empty) {
+    async addOption(categoryId: string, optionLabel: string, operation: "add" | "update", choices?: Array<string>) {
+        let existedOption = await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), where("title", "==", optionLabel)));
+        if (operation === "add" && !(existedOption).empty) {
             console.warn("label exists");
             return;
         }
-        let obj = {
-            id: "",
-            title: optionLabel,
-            isChoices: choices !== undefined,
-            choices: choices
+        switch (operation) {
+            case "add":
+                let addObj = {
+                    id: "",
+                    title: optionLabel,
+                    isChoices: choices !== undefined,
+                    choices: choices
+                }
+                !addObj.isChoices && delete addObj.choices;
+                await addDoc(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), addObj);
+            break;
+            case "update":
+                choices !== undefined && existedOption.forEach(async option => {
+                    await this.updateChoices(categoryId, option.id, choices);
+                })
+
+            break;
         }
-        !obj.isChoices && delete obj.choices;
-        await addDoc(collection(this.firestore, COLLECTION.CATEGORY, categoryId, "Options").withConverter(optionConverter), obj);
+
 
     }
 
     async deleteOption(categoryId: string, optionId: string) {
         await deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", optionId))
+    }
+
+    async updateChoices(categoryId: string, optionId: string, choices: Array<string>) {
+        await updateDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", optionId), {
+            choices
+        })
     }
 }

@@ -2,10 +2,10 @@ import { useCallback, useState } from "react";
 import { useAddPanel } from "../../hooks/useAddPanel";
 import "./AddPanel.css";
 
-export const AddChoicePanel = (props: { categoryId: string, close: () => void }) => {
+export const AddChoicePanel = (props: { categoryId: string, close: () => void, label?: string, choices?: Array<string> }) => {
 
-    const [label, setLabel, onInput, addOption] = useAddPanel();
-    const [choices, setChoices] = useState<Array<string>>([""]);
+    const [label, setLabel, onInput, addOption] = useAddPanel(props.label);
+    const [choices, setChoices] = useState<Array<string>>(props.choices || [""]);
 
     const updateChoices = useCallback((e: React.ChangeEvent<HTMLInputElement>,choicesArr: typeof choices, i: number ) => {
         let clone = choicesArr.slice();
@@ -32,7 +32,7 @@ export const AddChoicePanel = (props: { categoryId: string, close: () => void })
                 <h2>新增選項</h2>
                 <div>
                     <div>項目標籤</div>
-                    <input value={ label } onChange={ (e) => onInput(setLabel, e) }/>
+                    <input value={ label } onChange={ (e) => !props.label && onInput(setLabel, e) }/>
                 </div>
                 { choices.map((choice, i) => (
                     <div key={ i }>
