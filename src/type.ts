@@ -15,14 +15,16 @@ export type Option = {
 }
 export type Category = {
     id: string,
-    title: string
+    title: string,
+    types: Array<string>
 }
 
 export const categoryConverter = {
-    toFirestore: (category: Category) => { return { title: category.title } },
+    toFirestore: (category: Category) => { return { title: category.title, types: category.types } },
     fromFirestore: (snapshot: QueryDocumentSnapshot): Category => {
         type subCategory = {
             title: string;
+            types: Array<string>,
         }
         const data = snapshot.data() as subCategory;
         const obj = Object.assign({ id: snapshot.id }, data);

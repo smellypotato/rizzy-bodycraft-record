@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { useAddPanel } from "../../hooks/useAddPanel";
-import "./AddPanel.css";
 
 export const AddChoicePanel = (props: { categoryId: string, close: () => void, label?: string, choices?: Array<string> }) => {
 
@@ -31,7 +30,7 @@ export const AddChoicePanel = (props: { categoryId: string, close: () => void, l
             <section id="panel">
                 <h2>新增選項</h2>
                 <div>
-                    <div>項目標籤</div>
+                    <div>選項標籤</div>
                     <input value={ label } onChange={ (e) => !props.label && onInput(setLabel, e) }/>
                 </div>
                 { choices.map((choice, i) => (

@@ -1,5 +1,4 @@
 import { useAddPanel } from "../../hooks/useAddPanel";
-import "./AddPanel.css";
 
 export const AddInputPanel = (props: { categoryId: string, close: () => void, label?: string }) => {
 

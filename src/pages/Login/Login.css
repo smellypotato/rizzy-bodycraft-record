@@ -1,7 +1,4 @@
 #login section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: clamp(250px, 50vw, 500px);
     margin: 0 auto;
 }

@@ -7,10 +7,13 @@ import { Categories } from "./pages/Admin/Categories/Categories";
 import { StudentList } from "./pages/Admin/StudentList/StudentList";
 import { Login } from "./pages/Login/Login";
 import { Dashboard } from "./pages/User/Dashboard/Dashboard";
+import { RecordNow } from "./pages/User/RecordNow/RecordNow";
 import { SignUp } from "./pages/User/SignUp/Signup";
 
 // const path = "dashboard";
-const path = "student-list";
+// const path = "student-list";
+const path = "record-now";
+
 
 const App = () => {
     const navigate = useNavigate();
@@ -24,7 +27,7 @@ const App = () => {
             console.log("from email link", fromEmailLink);
             if (user && !fromEmailLink) {
                 setLoggedIn(true);
-                
+
                 navigate(`/${path}`);
             }
             else if (!fromEmailLink) {
@@ -44,6 +47,7 @@ const App = () => {
             { loggedIn && <Menu /> }
             <SetLoggedInContext.Provider value={ setLoggedIn }>
                 <Routes>
+                    <Route path="/record-now" element={ <RecordNow /> } />
                     <Route path="/student-list" element={ <StudentList /> } />
                     <Route path="/categories" element={ <Categories /> } />
                     <Route path="/dashboard" element={ <Dashboard /> } />

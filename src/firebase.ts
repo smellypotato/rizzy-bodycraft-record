@@ -154,14 +154,15 @@ export default class Firebase {
     //     return options;
     // }
 
-    async addCategory(categoryLabel: string) {
+    async addCategory(categoryLabel: string, subCategories: Array<string>) {
         if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY),where("title", "==", categoryLabel)))).empty) {
             console.warn("label exists");
             return;
         }
         let obj = {
             id: "",
-            title: categoryLabel
+            title: categoryLabel,
+            types: subCategories
         }
         await addDoc(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter), obj);
     }
@@ -171,6 +172,13 @@ export default class Firebase {
             .then(opts => opts.forEach(opt => deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", opt.id))));
 
         await deleteDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId))
+    }
+
+    async updateTypes(categoryId: string, types: Array<string>) {
+        console.log(types);
+        await updateDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId), {
+            types
+        })
     }
 
     onOptionUpdate(categoryId: string, onUpdate: (options: Array<Option>) => void) {

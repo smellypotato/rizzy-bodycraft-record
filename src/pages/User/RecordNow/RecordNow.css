@@ -1,0 +1,15 @@
+#record_now section {
+    width: clamp(400px, 30vw, 600px);
+}
+#record_now #content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 5rem;
+}
+#record_now #content #unique_info {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 40px;
+}
