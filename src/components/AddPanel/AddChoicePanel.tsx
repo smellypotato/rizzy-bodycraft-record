@@ -44,7 +44,7 @@ export const AddChoicePanel = (props: { categoryId: string, close: () => void, l
                 ))}
 
                 <div>
-                    <button onClick={ () => { addOption(props.categoryId, label, choices); props.close(); } }>確定</button>
+                    <button onClick={ () => { addOption(props.categoryId, label, choices.filter(choice => choice !== "")); props.close(); } }>確定</button>
                     <button onClick={ () => props.close() }>取消</button>
                 </div>
             </section>
