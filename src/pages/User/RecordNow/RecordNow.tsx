@@ -1,5 +1,5 @@
 import { Unsubscribe } from "@firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DropdownMenu } from "../../../components/DropdownMenu/DropdownMenu";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
@@ -13,8 +13,10 @@ export const RecordNow = () => {
     const [categories, setCategories] = useState<Array<Category>>([]);
     const categoryIdRef = useRef<string>();
     const [categoryId, setCategoryId] = useState<string>();
-    const [typeId, setTypeId] = useState<string>();
+    const [type, setType] = useState<string>();
     const [options, setOptions] = useState<Array<Option>>([]);
+    const [form, setForm] = useState<Array<Array<{ optionId: string, value?: string }>>>([]);
+
     useCloseDropdown(() => setActiveDropdown(undefined), activeDropdown);
 
     useEffect(() => {
@@ -46,6 +48,64 @@ export const RecordNow = () => {
         return () => unSubscribeOptionUpdate && unSubscribeOptionUpdate();
     }, [categoryId])
 
+    useEffect(() => {
+        if (options.length > 0) {
+            let firstForm = options.map(option => { return { optionId: option.id } });
+            setForm([firstForm]);
+        }
+    }, [options])
+
+    const currentCategory = useCallback(() => {
+        return categories.find(category => category.id === categoryId);
+    }, [categoryId]);
+
+    const addForm = useCallback((i: number) => {
+        let fm: typeof form = JSON.parse(JSON.stringify(form));
+        fm.splice(i + 1 , 0, options.map(option => { return { optionId: option.id } }));
+        setForm(fm);
+    }, [form]);
+
+    const deleteForm = useCallback((i: number) => {
+        let fm: typeof form = JSON.parse(JSON.stringify(form));
+        fm.splice(i , 1);
+        setForm(fm);
+    }, [form]);
+
+    const card = (i: number) => {
+        return (
+            <article key={ i } className="card">
+                { options.map(option => {
+                    let dropdownId = `${i}-${option.id}`;
+                    let fm: typeof form = JSON.parse(JSON.stringify(form));
+                    let opts = fm[i];
+                    let optIndex = opts.findIndex(opt => opt.optionId === option.id);
+                    const updateValue = (value: string) => {
+                        opts[optIndex].value = value;
+                        setForm(fm);
+                    }
+                    return (
+                        <DropdownMenu
+                            key={ option.id }
+                            onOpen={ () => setActiveDropdown(dropdownId) }
+                            onClose={ () => setActiveDropdown(undefined) }
+                            onSelect={ (index) => { updateValue(option.choices![parseInt(index)])} }
+                            default={ option.title }
+                            current={ form[i][optIndex].value }
+                            choices={ option.choices!.map((choice, i) => { return { id: `${i}`, label: choice } })}
+                            opened={ activeDropdown === dropdownId }
+                        />
+                    )
+                }) }
+                { form.length > 1 && <button className="delete" onClick={ () => deleteForm(i) }>-</button>}
+                <button className="add" onClick={ () => addForm(i) }>+</button>
+            </article>
+        )
+    }
+
+    const onSubmit = (fm: typeof form) => {
+        Firebase.instance.submitRecord(categoryId!, fm);
+    }
+
     return (
         <main id="record_now">
             <Title />
@@ -55,7 +115,7 @@ export const RecordNow = () => {
                     onClose={ () => setActiveDropdown(undefined) }
                     onSelect={ (id) => setCategoryId(id) }
                     default={ "分類" }
-                    current={ categories.find(category => category.id === categoryId)?.title }
+                    current={ currentCategory()?.title }
                     choices={ categories.map(category => { return { id: category.id, label: category.title } })}
                     opened={ activeDropdown === "category" }
                 />
@@ -64,16 +124,19 @@ export const RecordNow = () => {
                         <DropdownMenu
                             onOpen={ () => setActiveDropdown("type") }
                             onClose={ () => setActiveDropdown(undefined) }
-                            onSelect={ (id) => setTypeId(id) }
+                            onSelect={ (index) => setType(currentCategory()!.types[JSON.parse(index)]) }
                             default={ "類型" }
-                            current={ options.find(option => option.id === typeId)?.title }
-                            choices={ options.find(option => option.title === "type")!.choices!.map((choice, i) => { return { id: `${i}`, label: choice } })}
+                            current={ type }
+                            choices={ currentCategory()!.types.map((type, i) => { return { id: `${i}`, label: type } })}
                             opened={ activeDropdown === "type" }
                         />
                     </div>
                 }
-                <article>
-                </article>
+                { form.map((_f, i) => card(i)) }
+                <div id="form_buttons">
+                    <button id="submit" onClick={ () => onSubmit(form) }>提交</button>
+                    <button id="cancel" onClick={ () => {} }>取消</button>
+                </div>
             </section>
         </main>
     )

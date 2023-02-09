@@ -18,7 +18,13 @@ export type Category = {
     title: string,
     types: Array<string>
 }
-
+export type Record = {
+    id: string,
+    userId: string,
+    categoryId: string,
+    // date: Date
+    options: Array<Array<{ optionId: string, value: string }>>
+}
 export const categoryConverter = {
     toFirestore: (category: Category) => { return { title: category.title, types: category.types } },
     fromFirestore: (snapshot: QueryDocumentSnapshot): Category => {
@@ -51,6 +57,29 @@ export const optionConverter = {
         const data = snapshot.data() as subOption;
         const obj = Object.assign({ id: snapshot.id }, data);
         if (!obj.isChoices) delete obj.choices;
+        return obj;
+    }
+}
+
+export const recordConverter = {
+    toFirestore: (record: Record) => {
+        const obj = {
+            id: "",
+            userId: record.userId,
+            categoryId: record.categoryId,
+            options: record.options.map(opt => { return { record: opt }})
+        }
+        return obj
+    },
+    fromFirestore: (snapshot: QueryDocumentSnapshot): Record => {
+        type subRecord = {
+            userId: string,
+            category: string,
+            // date: Date
+            options: Array<Array<{ optionId: string, value: string }>>
+        }
+        const data = snapshot.data() as subRecord;
+        const obj = Object.assign({ id: snapshot.id, data });
         return obj;
     }
 }

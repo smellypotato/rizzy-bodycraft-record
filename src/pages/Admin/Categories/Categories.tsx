@@ -116,7 +116,7 @@ export const Categories = () => {
             <Title />
             <section id="content">
                 <div id="dropdown_big">
-                    <DropdownMenu onSelect={ (id) => categoryIdRef.current = id } onAdd={ () => setAddModal(<AddCategoryPanel close={ () => setAddModal(undefined)} />) } opened={ activeDropdown === "category"} onOpen={ () => setActiveDropdown("category") } onClose={ () => setActiveDropdown(undefined) } default={ "選擇項目" } current={ categories.find(cat => cat.id === categoryId)?.title } choices={ categories.map(category => { return { id: category.id, label: category.title } }) } />
+                    <DropdownMenu onSelect={ (id) => categoryIdRef.current = id } onAdd={ () => setAddModal(<AddCategoryPanel close={ () => setAddModal(undefined)} />) } opened={ activeDropdown === "category"} onOpen={ () => setActiveDropdown("category") } onClose={ () => setActiveDropdown(undefined) } default={ "選擇項目" } current={ currentCategory()?.title } choices={ categories.map(category => { return { id: category.id, label: category.title } }) } />
                     { categoryId && <button id="delete" onClick={ () => Firebase.instance.deleteCategory(categoryId) }>刪除項目<div className="bin"/></button> }
                 </div>
                 { categoryId && typeRow() }

@@ -7,9 +7,51 @@
     flex-direction: column;
     row-gap: 5rem;
 }
-#record_now #content #unique_info {
+#record_now #content #unique_info, #record_now #content > #form_buttons{
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 40px;
+}
+#record_now #content article {
+    width: 100%;
+    border-radius: 8px;
+    padding: 5rem 5rem calc(5rem + 15px);
+    background-color: var(--color_prim_light);
+    justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 5rem;
+    position: relative;
+    box-shadow: var(--shadow_small);
+}
+#record_now #content article > button {
+    width: 30px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    box-shadow: var(--shadow_small);
+    position: absolute;
+}
+#record_now #content article .delete {
+    background-color: var(--color_red);
+
+    inset: -10px -10px auto auto;
+}
+#record_now #content article .add {
+    background-color: var(--color_white);
+    bottom: -15px;
+    align-self: center;
+}
+#record_now #content #form_buttons button {
+    border-radius: 8px;
+    padding: 2rem 0;
+    font-size: 3rem;
+    color: var(--color_white);
+    box-shadow: var(--shadow_small);
+}
+#record_now #content #form_buttons button#submit {
+    background-color: var(--color_prim);
+}
+#record_now #content #form_buttons button#cancel {
+    background-color: var(--color_prim_light);
 }

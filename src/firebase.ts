@@ -1,7 +1,7 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { optionConverter, PendingApplcation, Option, categoryConverter, Category } from "./type";
+import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
   authDomain: "rizzy-bodycraft-record.firebaseapp.com",
@@ -15,7 +15,8 @@ const firebaseConfig = {
 enum COLLECTION {
     CATEGORY = "category",
     USER_PROFILE = "user-profile",
-    APPLICATION = "application"
+    APPLICATION = "application",
+    RECORD = "record"
 }
 
 export default class Firebase {
@@ -213,8 +214,6 @@ export default class Firebase {
 
             break;
         }
-
-
     }
 
     async deleteOption(categoryId: string, optionId: string) {
@@ -225,5 +224,14 @@ export default class Firebase {
         await updateDoc(doc(this.firestore, COLLECTION.CATEGORY, categoryId, "Options", optionId), {
             choices
         })
+    }
+
+    async submitRecord(categoryId: string, record: Array<Array<{ optionId: string, value?: string }>>) {
+        let obj = {
+            userId: this.auth.currentUser!.uid,
+            categoryId: categoryId,
+            options: record
+        }
+        addDoc(collection(this.firestore, COLLECTION.RECORD).withConverter(recordConverter), obj);
     }
 }
