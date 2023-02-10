@@ -7,6 +7,7 @@ export const Menu = () => {
 
     return (
         <section id="menu">
+            <button onClick={ () => navigate("/dashboard") }>Dashboard</button>     
             <button onClick={ () => navigate("/categories") }>Categories</button>
             <button onClick={ Firebase.instance.logout }>Logout</button>
         </section>

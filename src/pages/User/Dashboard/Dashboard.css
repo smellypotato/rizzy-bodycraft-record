@@ -16,7 +16,7 @@
     justify-content: center;
     box-shadow: var(--shadow_small);
 }
-#dashboard #years .years-button#current {
+#dashboard #years .years-button[aria-selected="true"] {
     background-color: var(--color_prim_light);
 }
 #dashboard #years .years-button:active {

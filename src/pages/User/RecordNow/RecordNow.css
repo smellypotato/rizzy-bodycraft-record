@@ -13,6 +13,23 @@
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 40px;
 }
+#record_now #content #unique_info #date {
+    position: relative;
+}
+#record_now #content #unique_info #date > button {
+    width: 100%;
+    height: 100%;
+    border-radius: 2rem;
+    background: var(--color_white);
+}
+#record_now #content #unique_info #date #calendar_container {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 2rem);
+    z-index: 100;
+    cursor: auto;
+    font-size: 3.5rem;
+}
 #record_now #content article {
     width: 100%;
     border-radius: 8px;
@@ -22,6 +39,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 5rem;
+    grid-row-gap: 4rem;
     position: relative;
     box-shadow: var(--shadow_small);
 }
@@ -31,6 +49,10 @@
     border-radius: 50%;
     box-shadow: var(--shadow_small);
     position: absolute;
+}
+#record_now #content article > input {
+    text-align: center;
+    font-size: 3.5rem;
 }
 #record_now #content article .delete {
     background-color: var(--color_red);

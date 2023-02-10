@@ -18,7 +18,7 @@
 #exercise_record #record_table #days {
     display: grid;
     grid-template: repeat(7, 16px) / repeat(1, auto);
-    grid-gap: 8px;
+    grid-gap: 2rem;
 
 }
 #exercise_record #record_table #calendar {
@@ -43,8 +43,8 @@
 }
 #exercise_record #record_table #months {
     display: grid;
-    grid-template-columns: repeat(53, 16px);
-    grid-gap: 8px;
+    grid-template-columns: repeat(53, 4rem);
+    grid-gap: 1.5rem;
     grid-column: 2 / 3;
 }
 #exercise_record #record_table #months label {
@@ -52,8 +52,8 @@
 }
 #exercise_record #record_table #dates {
     display: grid;
-    grid-template: repeat(7, 16px) / repeat(53, 16px);
-    grid-gap: 8px;
+    grid-template: repeat(7, 4rem) / repeat(53, 4rem);
+    grid-gap: 1.5rem;
     grid-auto-flow: column;
 }
 #exercise_record #record_table #dates .record_cell {

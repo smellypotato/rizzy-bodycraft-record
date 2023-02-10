@@ -1,0 +1,28 @@
+.calendar {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 4rem;
+}
+
+.calendar .title {
+    display: grid;
+    grid-template-columns: 24px 1fr 24px;
+}
+.calendar .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 30px);
+    grid-row-gap: 3px;
+}
+.calendar .title > button, .calendar .grid > button {
+    background: var(--color_white);
+}
+.calendar .node[aria-selected="true"] {
+    background: var(--color_prim_light);
+    border-radius: 50%;
+    color: var(--color_white);
+}
+
+.calendar .node_text { line-height: 30px }
+.calendar .node[aria-selected="true"] .node_text { border-radius: 50% }

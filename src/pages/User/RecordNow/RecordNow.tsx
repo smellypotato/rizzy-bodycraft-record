@@ -1,5 +1,6 @@
 import { Unsubscribe } from "@firebase/firestore";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CalendarDisplay } from "../../../components/calendar/calendarDisplay";
 import { DropdownMenu } from "../../../components/DropdownMenu/DropdownMenu";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
@@ -14,6 +15,7 @@ export const RecordNow = () => {
     const categoryIdRef = useRef<string>();
     const [categoryId, setCategoryId] = useState<string>();
     const [type, setType] = useState<string>();
+    const [date, setDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
     const [options, setOptions] = useState<Array<Option>>([]);
     const [form, setForm] = useState<Array<Array<{ optionId: string, value?: string }>>>([]);
 
@@ -84,16 +86,18 @@ export const RecordNow = () => {
                         setForm(fm);
                     }
                     return (
-                        <DropdownMenu
-                            key={ option.id }
-                            onOpen={ () => setActiveDropdown(dropdownId) }
-                            onClose={ () => setActiveDropdown(undefined) }
-                            onSelect={ (index) => { updateValue(option.choices![parseInt(index)])} }
-                            default={ option.title }
-                            current={ form[i][optIndex].value }
-                            choices={ option.choices!.map((choice, i) => { return { id: `${i}`, label: choice } })}
-                            opened={ activeDropdown === dropdownId }
-                        />
+                        option.isChoices ?
+                            <DropdownMenu
+                                key={ option.id }
+                                onOpen={ () => setActiveDropdown(dropdownId) }
+                                onClose={ () => setActiveDropdown(undefined) }
+                                onSelect={ (index) => { updateValue(option.choices![parseInt(index)])} }
+                                default={ option.title }
+                                current={ form[i][optIndex].value }
+                                choices={ option.choices!.map((choice, i) => { return { id: `${i}`, label: choice } })}
+                                opened={ activeDropdown === dropdownId }
+                            /> :
+                            <input placeholder={ option.title } value={ form[i][optIndex].value } onChange={ (e: React.ChangeEvent<HTMLInputElement>) => updateValue(e.currentTarget.value) } />
                     )
                 }) }
                 { form.length > 1 && <button className="delete" onClick={ () => deleteForm(i) }>-</button>}
@@ -130,6 +134,12 @@ export const RecordNow = () => {
                             choices={ currentCategory()!.types.map((type, i) => { return { id: `${i}`, label: type } })}
                             opened={ activeDropdown === "type" }
                         />
+                        <div id="date">
+                            <button onClick={ (e) => { if (activeDropdown !== "calendar") { setActiveDropdown("calendar"); e.stopPropagation(); } } }>{ `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` }</button>
+                            {   activeDropdown === "calendar" &&
+                                <div id="calendar_container"><CalendarDisplay selectedDay={ date } onChangeSelectedDay={ (date: Date) => setDate(date) } /></div>
+                            }
+                        </div>
                     </div>
                 }
                 { form.map((_f, i) => card(i)) }
