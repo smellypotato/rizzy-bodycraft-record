@@ -46,7 +46,7 @@ export const RecordNow = () => {
     useEffect(() => {
         let unSubscribeOptionUpdate: Unsubscribe;
         if (categoryId) unSubscribeOptionUpdate = Firebase.instance.onOptionUpdate(categoryId, (options) => setOptions(options));
-
+        else setOptions([]);
         return () => unSubscribeOptionUpdate && unSubscribeOptionUpdate();
     }, [categoryId])
 
@@ -97,7 +97,7 @@ export const RecordNow = () => {
                                 choices={ option.choices!.map((choice, i) => { return { id: `${i}`, label: choice } })}
                                 opened={ activeDropdown === dropdownId }
                             /> :
-                            <input placeholder={ option.title } value={ form[i][optIndex].value } onChange={ (e: React.ChangeEvent<HTMLInputElement>) => updateValue(e.currentTarget.value) } />
+                            <input key={ option.id } placeholder={ option.title } value={ form[i][optIndex].value || "" } onChange={ (e: React.ChangeEvent<HTMLInputElement>) => updateValue(e.currentTarget.value) } />
                     )
                 }) }
                 { form.length > 1 && <button className="delete" onClick={ () => deleteForm(i) }>-</button>}
@@ -107,7 +107,15 @@ export const RecordNow = () => {
     }
 
     const onSubmit = (fm: typeof form) => {
-        Firebase.instance.submitRecord(categoryId!, fm);
+        if (!type || fm.find(f => f.find(opt => !opt.value))) console.warn("undefined value exists!")
+        else Firebase.instance.submitRecord(categoryId!, fm);
+    }
+
+    const onReset = () => {
+        categoryIdRef.current = undefined;
+        setType(undefined);
+        setDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
+        setForm([]);
     }
 
     return (
@@ -117,7 +125,7 @@ export const RecordNow = () => {
                 <DropdownMenu
                     onOpen={ () => setActiveDropdown("category") }
                     onClose={ () => setActiveDropdown(undefined) }
-                    onSelect={ (id) => setCategoryId(id) }
+                    onSelect={ (id) => { categoryIdRef.current = id } }
                     default={ "分類" }
                     current={ currentCategory()?.title }
                     choices={ categories.map(category => { return { id: category.id, label: category.title } })}
@@ -143,10 +151,12 @@ export const RecordNow = () => {
                     </div>
                 }
                 { form.map((_f, i) => card(i)) }
-                <div id="form_buttons">
-                    <button id="submit" onClick={ () => onSubmit(form) }>提交</button>
-                    <button id="cancel" onClick={ () => {} }>取消</button>
-                </div>
+                {   categoryId &&
+                    <div id="form_buttons">
+                        <button id="submit" onClick={ () => onSubmit(form) }>提交</button>
+                        <button id="reset" onClick={ onReset }>重設</button>
+                    </div>
+                }
             </section>
         </main>
     )

@@ -74,6 +74,6 @@
 #record_now #content #form_buttons button#submit {
     background-color: var(--color_prim);
 }
-#record_now #content #form_buttons button#cancel {
+#record_now #content #form_buttons button#reset {
     background-color: var(--color_prim_light);
 }
