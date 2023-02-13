@@ -31,7 +31,7 @@
 }
 #exercise_record #record_table #calendar::-webkit-scrollbar {
     display: block;
-    height: 2rem;
+    height: 1rem;
 
 }
 #exercise_record #record_table #calendar::-webkit-scrollbar-thumb {
@@ -65,6 +65,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+#exercise_record #record_table #dates .record_cell[aria-checked="true"] {
+    background-color: var(--color_green);
+    cursor: pointer;
 }
 #exercise_record #record_table #dates .record_cell .tooltip_date {
     visibility: hidden;

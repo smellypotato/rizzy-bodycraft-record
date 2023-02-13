@@ -10,4 +10,8 @@ export class Utils {
     static weeksInMonth = (year: number, month: number) => {
         return Math.ceil((new Date(year, month, 1).getDay() + new Date(year, month + 1, 0).getDate()) / 7);
     }
+
+    static formatDate = (date: Date) => {
+        return date.toLocaleString("en-us", { day: "numeric", month: "long", year: "numeric" });
+    }
 }

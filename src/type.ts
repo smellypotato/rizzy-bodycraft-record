@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from "firebase/firestore";
+import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
 
 export type PendingApplcation = {
     id: string,
@@ -22,7 +22,8 @@ export type Record = {
     id: string,
     userId: string,
     categoryId: string,
-    // date: Date
+    type: string,
+    date: Date,
     options: Array<Array<{ optionId: string, value: string }>>
 }
 export const categoryConverter = {
@@ -67,6 +68,8 @@ export const recordConverter = {
             id: "",
             userId: record.userId,
             categoryId: record.categoryId,
+            type: record.type,
+            date: record.date,
             options: record.options.map(opt => { return { record: opt }})
         }
         return obj
@@ -74,12 +77,13 @@ export const recordConverter = {
     fromFirestore: (snapshot: QueryDocumentSnapshot): Record => {
         type subRecord = {
             userId: string,
-            category: string,
-            // date: Date
-            options: Array<Array<{ optionId: string, value: string }>>
+            categoryId: string,
+            type: string,
+            date: Timestamp,
+            options: Array<{ record: Array<{ optionId: string, value: string }> }>
         }
         const data = snapshot.data() as subRecord;
-        const obj = Object.assign({ id: snapshot.id, data });
+        const obj: Record = Object.assign({ id: snapshot.id }, data, { date: data.date.toDate(), options: data.options.map(option => option.record ) });
         return obj;
     }
 }

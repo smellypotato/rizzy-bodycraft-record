@@ -137,14 +137,14 @@ export default class Firebase {
         })
         return unSubscribeCategoryUpdate;
     }
-    //
-    // async getCategories() {
-    //     let categories: Array<any> = [];
-    //     await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
-    //         categories.push(cat.data());
-    //     }));
-    //     return categories;
-    // }
+
+    async getCategories() {
+        let categories: Array<any> = [];
+        await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
+            categories.push(cat.data());
+        }));
+        return categories;
+    }
 
     // async getOptions(categoryId: string) {
     //     let options: Array<Option> = [];
@@ -226,12 +226,23 @@ export default class Firebase {
         })
     }
 
-    async submitRecord(categoryId: string, record: Array<Array<{ optionId: string, value?: string }>>) {
+    async submitRecord(categoryId: string, type: string, date: Date, record: Array<Array<{ optionId: string, value?: string }>>) {
         let obj = {
             userId: this.auth.currentUser!.uid,
             categoryId: categoryId,
+            type: type,
+            date: date,
             options: record
         }
         addDoc(collection(this.firestore, COLLECTION.RECORD).withConverter(recordConverter), obj);
     }
+
+    async getRecord() {
+        let records: Array<Record> = [];
+        await getDocs(query(collection(this.firestore, COLLECTION.RECORD).withConverter(recordConverter), where("userId", "==", this.auth.currentUser!.uid))).then(rcs => rcs.forEach(record => {
+            records.push(record.data());
+        }));
+        return records;
+    }
+
 }

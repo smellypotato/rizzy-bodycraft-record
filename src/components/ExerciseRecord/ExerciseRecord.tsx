@@ -17,7 +17,7 @@ enum MONTH {
     DEC
 }
 
-export const ExerciseRecord = (props: { currentYear: number }) => {
+export const ExerciseRecord = (props: { currentYear: number, worked: Array<number>, onSelectDay: React.Dispatch<React.SetStateAction<Date | undefined>> }) => {
 
     const [weeks] = useState(Utils.newArray(12).map((month) => Utils.weeksInMonth(props.currentYear, month) - (month !== MONTH.JAN && new Date(props.currentYear, month, 1).getDay() !== 0 ? 1 : 0)));
 
@@ -53,9 +53,10 @@ export const ExerciseRecord = (props: { currentYear: number }) => {
                             Utils.newArray(Utils.daysInYear(props.currentYear)).map(dayInYear => {
                                 let date = new Date(new Date(props.currentYear, 0).setDate(dayInYear + 1));
                                 let dayInMonth = date.getDate();
+                                let hasRecord = props.worked.includes(date.valueOf());
                                 return (
-                                    <div className="record_cell" key={ dayInYear }>
-                                        <div className="tooltip_date">{ `${dayInMonth}/${date.getMonth() + 1}/${date.getFullYear()}` }</div>
+                                    <div className="record_cell" key={ dayInYear } aria-checked={ hasRecord } onClick={ () => props.onSelectDay(date) }>
+                                        { hasRecord && <div className="tooltip_date">{ `${dayInMonth}/${date.getMonth() + 1}/${date.getFullYear()}` }</div>}
                                     </div>
                                 )
                             })

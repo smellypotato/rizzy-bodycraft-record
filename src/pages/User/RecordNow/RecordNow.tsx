@@ -108,7 +108,7 @@ export const RecordNow = () => {
 
     const onSubmit = (fm: typeof form) => {
         if (!type || fm.find(f => f.find(opt => !opt.value))) console.warn("undefined value exists!")
-        else Firebase.instance.submitRecord(categoryId!, fm);
+        else Firebase.instance.submitRecord(categoryId!, type, date, fm);
     }
 
     const onReset = () => {
