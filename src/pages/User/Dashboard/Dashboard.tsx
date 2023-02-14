@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PATH } from '../../../App';
 import { ExerciseRecord } from '../../../components/ExerciseRecord/ExerciseRecord';
 import { Title } from '../../../components/Title/Title';
 import Firebase from '../../../firebase';
@@ -56,7 +57,7 @@ export const Dashboard = () => {
                     </article>
                 }
             </section>
-            <button className="main-button" onClick={ () => navigate("/record-now")}>Record Now<div id="pen"/></button>
+            <button className="main-button" onClick={ () => navigate(PATH.RECORD_NOW)}>Record Now<div id="pen"/></button>
             <button className="main-button">My Record<div id="record"/></button>
         </main>
     )

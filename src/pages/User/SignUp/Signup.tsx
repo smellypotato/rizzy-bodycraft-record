@@ -1,5 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PATH } from "../../../App";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
 import { SetLoggedInContext } from "../../../hooks/contexts";
@@ -25,13 +26,13 @@ export const SignUp = () => {
             setLoggedIn(Firebase.instance.auth.currentUser !== null);
             let isNewAccount = await Firebase.instance.checkNewAccount(email)
             if (isNewAccount) setVerifiedEmail(true);
-            else navigate("/dashboard");
+            else navigate(PATH.DASHBOARD);
         }
     }, [email]);
 
     const onBackToLogin = useCallback(async () => {
         await Firebase.instance.logout();
-        navigate("/", { replace: true })
+        navigate(PATH.LOGIN, { replace: true })
     }, []);
 
     const onSignup = useCallback(() => {

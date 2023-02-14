@@ -10,9 +10,18 @@ import { Dashboard } from "./pages/User/Dashboard/Dashboard";
 import { RecordNow } from "./pages/User/RecordNow/RecordNow";
 import { SignUp } from "./pages/User/SignUp/Signup";
 
+export enum PATH {
+    LOGIN = "/rizzy-bodycraft-record/login",
+    SIGN_UP = "/rizzy-bodycraft-record/signup",
+    DASHBOARD = "/rizzy-bodycraft-record/dashboard",
+    CATEGORIES = "/rizzy-bodycraft-record/categories",
+    STUDENT_LIST = "/rizzy-bodycraft-record/student-list",
+    RECORD_NOW = "/rizzy-bodycraft-record/record-now"
+}
+
 // const path = "dashboard";
 // const path = "student-list";
-const path = "record-now";
+const path = PATH.RECORD_NOW;
 
 
 const App = () => {
@@ -21,20 +30,20 @@ const App = () => {
 
     useEffect(() => {
         const fromEmailLink = Firebase.instance.isAnnoymousAccount();
-        if (fromEmailLink) navigate(`/signup${window.location.search}`);
+        if (fromEmailLink) navigate(`${PATH.SIGN_UP}${window.location.search}`);
         const unSubscribeAuthStateChange = Firebase.instance.onAuthStateChanged((user) => {
             console.log("auth state changed", user);
             console.log("from email link", fromEmailLink);
             if (user && !fromEmailLink) {
                 setLoggedIn(true);
 
-                navigate(`/${path}`);
+                navigate(`${path}`);
             }
             else if (!fromEmailLink) {
                 setLoggedIn(false);
 
                 console.log("to login");
-                navigate("/login");
+                navigate(PATH.LOGIN);
             }
         })
         return () => {
@@ -47,12 +56,12 @@ const App = () => {
             { loggedIn && <Menu /> }
             <SetLoggedInContext.Provider value={ setLoggedIn }>
                 <Routes>
-                    <Route path="/record-now" element={ <RecordNow /> } />
-                    <Route path="/student-list" element={ <StudentList /> } />
-                    <Route path="/categories" element={ <Categories /> } />
-                    <Route path="/dashboard" element={ <Dashboard /> } />
-                    <Route path="/signup" element={ <SignUp /> } />
-                    <Route path="/login" element={ <Login /> } />
+                    <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
+                    <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
+                    <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
+                    <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
+                    <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
+                    <Route path={ PATH.LOGIN } element={ <Login /> } />
                     <Route path="*" element={ <Login /> } />
                 </Routes>
             </SetLoggedInContext.Provider>
