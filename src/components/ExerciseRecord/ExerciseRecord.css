@@ -18,16 +18,14 @@
 #exercise_record #record_table #days {
     display: grid;
     grid-template: repeat(7, 16px) / repeat(1, auto);
-    grid-gap: 2rem;
-
+    grid-gap: 1.5rem;
 }
 #exercise_record #record_table #calendar {
     display: flex;
     flex-direction: column;
-    row-gap: 2.5rem;
+    row-gap: 1.5rem;
     overflow-x: scroll;
     overflow-y: hidden;
-    padding-bottom: 2.5rem
 }
 #exercise_record #record_table #calendar::-webkit-scrollbar {
     display: block;
@@ -55,6 +53,7 @@
     grid-template: repeat(7, 4rem) / repeat(53, 4rem);
     grid-gap: 1.5rem;
     grid-auto-flow: column;
+    padding-bottom: 2rem;
 }
 #exercise_record #record_table #dates .record_cell {
     border-radius: 4px;

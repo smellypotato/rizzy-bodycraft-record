@@ -4,6 +4,7 @@
     justify-content: flex-start;
     column-gap: 6rem;
     align-self: flex-start;
+    margin: 5rem 0;
 }
 #dashboard #years .years-button {
     border-radius: 1rem;
@@ -32,6 +33,7 @@
     grid-column-gap: 5rem;
     color: var(--color_prim_light);
     align-items: center;
+    margin-bottom: 4.5rem;
 }
 #dashboard .record #date .dash {
     height: 1px;
@@ -41,6 +43,7 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-column-gap: 15rem;
+    margin-bottom: 1rem;
 }
 #dashboard .record .item .category {
     display: grid;
