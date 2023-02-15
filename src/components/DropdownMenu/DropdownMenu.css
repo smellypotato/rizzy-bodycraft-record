@@ -1,52 +1,52 @@
-[class^="dropdown_menu"] {
+[class*="dropdown_menu"] {
     width: 100%;
     position: relative;
 }
 .dropdown_menu_open {
     z-index: 100;
 }
-[class^="dropdown_menu"] > * {
+[class*="dropdown_menu"] > * {
     width: 100%;
     background-color: var(--color_white);
     border-radius: 8px;
 }
-[class^="dropdown_menu"] button {
+[class*="dropdown_menu"] button {
     height: 7.5rem;
 }
-[class^="dropdown_menu"] #current, [class^="dropdown_menu"] #choices .choice {
+[class*="dropdown_menu"] #current, [class*="dropdown_menu"] #choices .choice {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 6%;
 }
-[class^="dropdown_menu"] #current:not(:last-child) {
+[class*="dropdown_menu"] #current:not(:last-child) {
     border-radius: 8px 8px 0 0;
 }
-[class^="dropdown_menu"] #current > *:first-child, [class^="dropdown_menu"] #current > *:last-child, [class^="dropdown_menu"] #choices .choice > *:first-child, [class^="dropdown_menu"] #choices .choice > *:last-child {
+[class*="dropdown_menu"] #current > *:first-child, [class*="dropdown_menu"] #current > *:last-child, [class*="dropdown_menu"] #choices .choice > *:first-child, [class*="dropdown_menu"] #choices .choice > *:last-child {
     width: 16px;
 }
-[class^="dropdown_menu"] .arrow {
+[class*="dropdown_menu"] .arrow {
     aspect-ratio: 1 / 1;
     background: url(../../assets/arrow_down.svg) var(--bg_img_setting);
     background-size: var(--icon_size);
 }
-[class^="dropdown_menu"] #choices {
+[class*="dropdown_menu"] #choices {
     display: flex;
     flex-direction: column;
     width: 100%;
     position: absolute;
 }
-[class^="dropdown_menu"] #choices .choice {
+[class*="dropdown_menu"] #choices .choice {
     width: 100%;
     background-color: var(--color_white);
 }
-[class^="dropdown_menu"] #choices .choice:hover {
+[class*="dropdown_menu"] #choices .choice:hover {
     background-color: #64C7FF;
 }
-[class^="dropdown_menu"] #choices .choice:last-child {
+[class*="dropdown_menu"] #choices .choice:last-child {
     border-radius: 0 0 8px 8px;
 }
-[class^="dropdown_menu"] #choices .choice .delete {
+[class*="dropdown_menu"] #choices .choice .delete {
     background: url(../../assets/cross.svg) var(--bg_img_setting);
     background-size: contain;
     filter: var(--filter_red);

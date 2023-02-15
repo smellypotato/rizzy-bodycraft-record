@@ -7,6 +7,7 @@ import { Categories } from "./pages/Admin/Categories/Categories";
 import { StudentList } from "./pages/Admin/StudentList/StudentList";
 import { Login } from "./pages/Login/Login";
 import { Dashboard } from "./pages/User/Dashboard/Dashboard";
+import { MyRecord } from "./pages/User/MyRecord/MyRecord";
 import { RecordNow } from "./pages/User/RecordNow/RecordNow";
 import { SignUp } from "./pages/User/SignUp/Signup";
 
@@ -16,12 +17,13 @@ export enum PATH {
     DASHBOARD = "/rizzy-bodycraft-record/dashboard",
     CATEGORIES = "/rizzy-bodycraft-record/categories",
     STUDENT_LIST = "/rizzy-bodycraft-record/student-list",
-    RECORD_NOW = "/rizzy-bodycraft-record/record-now"
+    RECORD_NOW = "/rizzy-bodycraft-record/record-now",
+    MY_RECORD = "/rizzy-bodycraft-record/my-record"
 }
 
 // const path = "dashboard";
 // const path = "student-list";
-const path = PATH.RECORD_NOW;
+const path = PATH.MY_RECORD;
 
 
 const App = () => {
@@ -56,6 +58,7 @@ const App = () => {
             { loggedIn && <Menu /> }
             <SetLoggedInContext.Provider value={ setLoggedIn }>
                 <Routes>
+                    <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
                     <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
                     <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
                     <Route path={ PATH.CATEGORIES } element={ <Categories /> } />

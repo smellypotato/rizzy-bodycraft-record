@@ -6,6 +6,7 @@ import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
 import { useCloseDropdown } from "../../../hooks/useCloseDropdown";
 import { Category, Option } from "../../../type";
+import { Utils } from "../../../Utils";
 import "./RecordNow.css";
 
 export const RecordNow = () => {
@@ -15,7 +16,7 @@ export const RecordNow = () => {
     const categoryIdRef = useRef<string>();
     const [categoryId, setCategoryId] = useState<string>();
     const [type, setType] = useState<string>();
-    const [date, setDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
+    const [date, setDate] = useState(Utils.getTodayDate());
     const [options, setOptions] = useState<Array<Option>>([]);
     const [form, setForm] = useState<Array<Array<{ optionId: string, value?: string }>>>([]);
 

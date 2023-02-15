@@ -14,4 +14,8 @@ export class Utils {
     static formatDate = (date: Date) => {
         return date.toLocaleString("en-us", { day: "numeric", month: "long", year: "numeric" });
     }
+
+    static getTodayDate = () => {
+        return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    }
 }

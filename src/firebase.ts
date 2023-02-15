@@ -139,7 +139,7 @@ export default class Firebase {
     }
 
     async getCategories() {
-        let categories: Array<any> = [];
+        let categories: Array<Category> = [];
         await getDocs(collection(this.firestore, COLLECTION.CATEGORY).withConverter(categoryConverter)).then(cats => cats.forEach(cat => {
             categories.push(cat.data());
         }));
