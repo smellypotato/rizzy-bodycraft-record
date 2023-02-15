@@ -35,7 +35,7 @@
 #my_record .record .item .category {
     display: grid;
     grid-template-rows: auto 1fr;
-    grid-row-gap: 3rem;
+    grid-row-gap: 2rem;
     justify-items: center;
     font-size: 3.5rem;
     color: var(--color_black);
@@ -46,7 +46,7 @@
     background: var(--color_black);
 }
 #my_record .record .item .details {
-    padding-bottom: 30px;
+    padding-bottom: 4rem;
     display: flex;
     flex-direction: column;
     row-gap: 3rem;

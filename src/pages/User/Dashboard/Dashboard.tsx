@@ -57,8 +57,8 @@ export const Dashboard = () => {
                     </article>
                 }
             </section>
-            <button className="main-button" onClick={ () => navigate(PATH.RECORD_NOW)}>Record Now<div id="pen"/></button>
-            <button className="main-button">My Record<div id="record"/></button>
+            <button className="main-button" onClick={ () => navigate(PATH.RECORD_NOW) }>Record Now<div id="pen"/></button>
+            <button className="main-button" onClick={ () => navigate(PATH.MY_RECORD) }>My Record<div id="record"/></button>
         </main>
     )
 }

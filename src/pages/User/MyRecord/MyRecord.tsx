@@ -22,7 +22,7 @@ export const MyRecord = () => {
     const [records, setRecords] = useState<Array<Record>>([]);
     const [categories, setCategories] = useState<Array<Category>>([]);
     const [period, setPeriod] = useState(PERIOD.MONTH);
-    const [filter, setFilter] = useState<Category>()
+    const [filter, setFilter] = useState<Category>({ id: "all", title: "全部", types: [] })
     const [activeDropdown, setActiveDropdown] = useState<string>();
 
     useCloseDropdown(() => setActiveDropdown(undefined), activeDropdown);
@@ -32,7 +32,7 @@ export const MyRecord = () => {
         Firebase.instance.getCategories().then(categories => setCategories([{ id: "all", title: "全部", types: [] as Array<string> }].concat(categories)));
     }, []);
 
-    const recordsByDate = useCallback((period: string) => {
+    const recordsByDate = useCallback((period: string, filter: Category) => {
         let date = Utils.getTodayDate();
         switch (period) {
             case PERIOD.ALL:
@@ -59,7 +59,7 @@ export const MyRecord = () => {
         let map: Map<number, Array<Record>> = new Map();
         records.forEach(record => {
             let key = record.date.valueOf();
-            if (key < date.valueOf()) return;
+            if (key < date.valueOf() || (filter.id !== "all" && record.categoryId !== filter.id)) return;
             if (map.has(key)) {
                 let arr = map.get(key)!;
                 arr.push(record);
@@ -85,7 +85,7 @@ export const MyRecord = () => {
                         choices={ Object.keys(PERIOD).map(period => { return { id: period, label: PERIOD[period as keyof typeof PERIOD], } }) }
                     />
                     <DropdownMenu
-                        onSelect={ (filter) => setFilter(categories.find(category => category.id === filter)) }
+                        onSelect={ (filter) => setFilter(categories.find(category => category.id === filter)!) }
                         onOpen={ () => setActiveDropdown("filter") }
                         onClose={ () => setActiveDropdown(undefined) }
                         opened={ activeDropdown === "filter" }
@@ -96,7 +96,7 @@ export const MyRecord = () => {
                 </div>
                 <section id="records">
                     {
-                        Array.from(recordsByDate(period)).map(record =>
+                        Array.from(recordsByDate(period, filter)).map(record =>
                             <article className="record">
                                 <div id="date">
 
