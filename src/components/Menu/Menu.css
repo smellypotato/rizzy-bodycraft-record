@@ -17,7 +17,7 @@
 #menu .icon {
     width: 5rem;
     height: 100%;
-    background-size: contain;
+    background-size: var(--icon_size);
     filter: var(--filter_main);
 }
 #menu #home .icon {

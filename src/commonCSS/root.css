@@ -11,6 +11,7 @@
     --filter_red: invert(22%) sepia(97%) saturate(1228%) hue-rotate(328deg) brightness(101%) contrast(95%);
     --filter_green: invert(70%) sepia(84%) saturate(409%) hue-rotate(60deg) brightness(84%) contrast(87%);
     --filter_main: invert(29%) sepia(29%) saturate(994%) hue-rotate(344deg) brightness(92%) contrast(85%);
+    --filter_white: invert(100%) sepia(0%) saturate(7500%) hue-rotate(125deg) brightness(102%) contrast(107%);
     
     --icon_size: contain;
     --bg_img_setting: no-repeat center;
