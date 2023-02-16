@@ -50,17 +50,18 @@ export default class Firebase {
         }).catch(err => console.error(err));
     }
 
-    async login(args: { email: string, password?: string }): Promise<boolean> {
+    async login(args: { email: string, password?: string }): Promise<{ success: boolean, msg: string }> {
         const { email, password } = args;
         if (email !== undefined) {
             if (password !== undefined) {
                 return await new Promise((resolve, reject) => {
                     signInWithEmailAndPassword(this.auth, email, password).then(credential => {
                         console.log(credential);
-                        resolve(true);
+                        // this.addAdmin();
+                        resolve({ success: true , msg: "" });
                     }).catch((err: { code: string, message: string } ) => {
                         console.error(err.code);
-                        reject(false);
+                        reject(err.code);
                     });
                 });
             }
@@ -69,17 +70,17 @@ export default class Firebase {
                 return await new Promise((resolve, reject) =>
                     signInWithEmailLink(this.auth, email, window.location.href).then(result => {
                         console.log(result);
-                        resolve(true);
+                        resolve({ success: true, msg: "normal" });
                     }).catch((err: { code: string, message: string }) => {
                         // auth/invalid-email
                         // auth/invalid-action-code when link used to login
                         console.error(err.code, err.message);
-                        reject(false)
+                        reject(err.code)
                     })
                 );
             }
         }
-        return false;
+        return Promise.reject("no email");
     }
 
     async logout() {
@@ -105,6 +106,12 @@ export default class Firebase {
     }
 
     // firestore
+
+    addAdmin() {
+        setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, this.auth.currentUser!.email!), {
+            isAdmin: true
+        })
+    }
 
     onPendingAccountsChange(callback: (pendings: Array<PendingApplcation>) => void) {
         return onSnapshot(collection(this.firestore, COLLECTION.APPLICATION), collection => {

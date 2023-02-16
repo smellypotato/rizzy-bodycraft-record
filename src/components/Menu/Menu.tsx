@@ -9,6 +9,7 @@ export const Menu = () => {
     return (
         <section id="menu">
             <button id="home" onClick={ () => navigate(PATH.DASHBOARD) }><div className="icon"/>Dashboard</button>
+            <button id="student_list" onClick={ () => navigate(PATH.STUDENT_LIST) }><div className="icon"/>Student List</button>
             <button id="categories" onClick={ () => navigate(PATH.CATEGORIES) }><div className="icon"/>Categories</button>
             <button id="logout" onClick={ Firebase.instance.logout }><div className="icon"/>Logout</button>
         </section>

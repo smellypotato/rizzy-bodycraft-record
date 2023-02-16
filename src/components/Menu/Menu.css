@@ -23,6 +23,9 @@
 #menu #home .icon {
     background: url(../../assets/home.svg) var(--bg_img_setting);
 }
+#menu #student_list .icon {
+    background: url(../../assets/account.svg) var(--bg_img_setting);
+}
 #menu #categories .icon {
     background: url(../../assets/record.svg) var(--bg_img_setting);
 }

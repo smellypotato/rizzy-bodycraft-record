@@ -97,9 +97,8 @@ export const MyRecord = () => {
                 <section id="records">
                     {
                         Array.from(recordsByDate(period, filter)).map(record =>
-                            <article className="record">
+                            <article className="record" key={ record[0] }>
                                 <div id="date">
-
                                     { Utils.formatDate(new Date(record[0])) }
                                     <div className="dash" />
                                 </div>

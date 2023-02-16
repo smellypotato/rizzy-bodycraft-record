@@ -1,10 +1,14 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../App";
 import { Title } from "../../components/Title/Title";
 import Firebase from "../../firebase";
 import { useInput } from "../../hooks/useInput";
 import "./Login.css";
 
 export const Login = () => {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useInput("hksahenry@yahoo.com.hk");
     const [password, setPassword] = useInput("hksa13968629");
 
@@ -24,7 +28,8 @@ export const Login = () => {
                 <input type="text" value={ password } placeholder="Password" onChange={ (e) => onInput(setPassword, e) } />
                 <a id="login-forget">Forget password?</a>
                 <div id="login-buttons">
-                    <button id="user" onClick={ onLogin }>Login</button><button id="admin" onClick={ onLogin }>Admin Login</button>
+                    <button id="user" onClick={ onLogin }>Login</button>
+                    <button id="register" onClick={ () => navigate(PATH.SIGN_UP) }>Sign Up</button>
                 </div>
             </section>
         </main>

@@ -11,7 +11,7 @@ import './Dashboard.css';
 export const Dashboard = () => {
     const navigate = useNavigate();
 
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear() - 1);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedDay, setSelectedDay] = useState<Date>();
     const [records, setRecords] = useState<Array<Record>>([]);
     const [categories, setCategories] = useState<Array<Category>>([]);

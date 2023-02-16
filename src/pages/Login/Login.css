@@ -1,14 +1,25 @@
+#login {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 10%;
+    padding-bottom: 15vh;
+}
 #login section {
-    width: clamp(250px, 50vw, 500px);
+    width: clamp(300px, 50vw, 500px);
     margin: 0 auto;
 }
 #login input {
     width: 100%;
+    margin-top: 4rem;
 }
 #login-forget {
+    display: block;
     align-self: flex-start;
     background: none;
     margin-left: 2rem;
+    margin-top: 1rem;
     color: var(--color_prim);
     font-size: 3rem;
 }
@@ -17,6 +28,7 @@
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 10%;
+    margin-top: 4rem;
 }
 #login-buttons > button {
     border-radius: 8px;
@@ -27,6 +39,6 @@
 #login-buttons > button#user {
     background-color: var(--color_prim);
 }
-#login-buttons > button#admin {
+#login-buttons > button#register {
     background-color: var(--color_prim_light);
 }
