@@ -55,7 +55,7 @@ export const ExerciseRecord = (props: { currentYear: number, worked: Array<numbe
                                 let dayInMonth = date.getDate();
                                 let hasRecord = props.worked.includes(date.valueOf());
                                 return (
-                                    <div className="record_cell" key={ dayInYear } aria-checked={ hasRecord } onClick={ () => props.onSelectDay(date) }>
+                                    <div className="record_cell" key={ dayInYear } aria-checked={ hasRecord } onClick={ () => hasRecord && props.onSelectDay(date) }>
                                         { hasRecord && <div className="tooltip_date">{ `${dayInMonth}/${date.getMonth() + 1}/${date.getFullYear()}` }</div>}
                                     </div>
                                 )

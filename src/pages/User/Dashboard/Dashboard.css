@@ -70,8 +70,13 @@
     flex-direction: row;
     column-gap: 10rem;
 }
+#dashboard #main_buttons {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
+}
 
-#dashboard .main-button {
+#dashboard #main_buttons .main_button {
     font-size: 4rem;
     padding: 4rem 6rem;
     border-radius: 8px;
@@ -84,18 +89,18 @@
     justify-content: center;
     align-items: center;
 }
-#dashboard .main-button:active {
+#dashboard #main_buttons .main_button:active {
     box-shadow: 0 0 0;
 }
-#dashboard .main-button div {
+#dashboard #main_buttons .main_button div {
     width: 18px;
     aspect-ratio: 1 / 1;
     background-size: var(--icon_size);
     filter: var(--filter_white);
 }
-#dashboard .main-button div#pen {
+#dashboard #main_buttons .main_button div#pen {
     background: url("../../../assets/pen.svg") var(--bg_img_setting);
 }
-#dashboard .main-button div#record {
+#dashboard #main_buttons .main_button div#record {
     background: url("../../../assets/record.svg") var(--bg_img_setting);
 }

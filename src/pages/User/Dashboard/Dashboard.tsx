@@ -36,10 +36,10 @@ export const Dashboard = () => {
                             { Utils.formatDate(selectedDay) }
                             <div className="dash" />
                         </div>
-                        {   records.map((record, i) => (
+                        {   records.filter(record => record.date.valueOf() === selectedDay.valueOf()).map((record, i) => (
                                 <div className="item" key={ i }>
                                     <div className="category">
-                                        <div>{ categories.find(category => category.id === records[0].categoryId)?.title }</div>
+                                        <div>{ categories.find(category => category.id === record.categoryId)?.title }</div>
                                         <div className="line" />
                                     </div>
                                     <div className="details">
@@ -57,8 +57,10 @@ export const Dashboard = () => {
                     </article>
                 }
             </section>
-            <button className="main-button" onClick={ () => navigate(PATH.RECORD_NOW) }>Record Now<div id="pen"/></button>
-            <button className="main-button" onClick={ () => navigate(PATH.MY_RECORD) }>My Record<div id="record"/></button>
+            <div id="main_buttons">
+                <button className="main_button" onClick={ () => navigate(PATH.RECORD_NOW) }>Record Now<div id="pen"/></button>
+                <button className="main_button" onClick={ () => navigate(PATH.MY_RECORD) }>My Record<div id="record"/></button>
+            </div>
         </main>
     )
 }
