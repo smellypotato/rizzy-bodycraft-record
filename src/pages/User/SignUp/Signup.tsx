@@ -4,14 +4,14 @@ import { PATH } from "../../../App";
 import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
-import { SetLoggedInContext, SetModalContext } from "../../../hooks/contexts";
+import { SetModalContext, SetUserInfoContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./SignUp.css";
 
 export const SignUp = () => {
     const navigate = useNavigate();
-    const setLoggedIn = useContext(SetLoggedInContext);
     const setModal = useContext(SetModalContext);
+    const setUserInfo = useContext(SetUserInfoContext);
     const [verifiedEmail, setVerifiedEmail] = useState(false);
     const [email, setEmail] = useInput("hksahenry@gmail.com");
     const [name, setName] = useInput("");
@@ -26,7 +26,6 @@ export const SignUp = () => {
         setModal(<Loading msg="Verifying email..." />);
         let verified = await Firebase.instance.login({ email: email });
         if (verified) {
-            setLoggedIn(Firebase.instance.auth.currentUser !== null);
             let isNewAccount = await Firebase.instance.checkNewAccount(email)
             if (isNewAccount) setVerifiedEmail(true);
             else navigate(PATH.DASHBOARD);
@@ -41,8 +40,14 @@ export const SignUp = () => {
 
     const onSignup = useCallback(async () => {
         setModal(<Loading msg="Signing up..." />);
-        await Firebase.instance.signup(email, password, name);
+        let id = await Firebase.instance.signup(email, password, name);
         setModal();
+        setUserInfo({
+            id: id,
+            email: email,
+            name: name,
+            admin: false
+        })
         navigate(PATH.DASHBOARD);
     }, [email, password, name]);
 

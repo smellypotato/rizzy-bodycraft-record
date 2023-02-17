@@ -1,5 +1,12 @@
 import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
 
+export type User = {
+    id: string,
+    name: string,
+    email: string,
+    admin: boolean
+}
+
 export type PendingApplcation = {
     id: string,
     name: string,
@@ -25,6 +32,13 @@ export type Record = {
     type: string,
     date: Date,
     options: Array<Array<{ optionId: string, value: string }>>
+}
+export const userProfileConverter = {
+    toFirestore: (user: User) => { return { id: user.id, email: user.email, name: user.name } },
+    fromFirestore: (snapshot: QueryDocumentSnapshot): { id: string, email: string, name: string } => {
+        const data = snapshot.data() as { id: string, email: string, name: string };
+        return data;
+    }
 }
 export const categoryConverter = {
     toFirestore: (category: Category) => { return { title: category.title, types: category.types } },

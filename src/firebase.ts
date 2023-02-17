@@ -1,7 +1,7 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record } from "./type";
+import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record, userProfileConverter, User as UserProfile } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
   authDomain: "rizzy-bodycraft-record.firebaseapp.com",
@@ -44,22 +44,23 @@ export default class Firebase {
 
     // auth
 
-    async signup(email: string, password: string, name: string) {
-        updatePassword(this.auth.currentUser!, password).then(() => {
-            updateProfile(this.auth.currentUser!, { displayName: name });
-            this.updateUserProfile({ email, name });
-        }).catch(err => console.error(err));
+    async signup(email: string, password: string, name: string): Promise<string> {
+        return await new Promise(resolve => updatePassword(this.auth.currentUser!, password).then(() => {
+            this.updateUserProfile({ id: this.auth.currentUser!.uid, email, name });
+            this.login({ email, password });
+            resolve(this.auth.currentUser!.uid);
+        }).catch(err => console.error(err)));
     }
 
-    async login(args: { email: string, password?: string }): Promise<{ success: boolean, msg: string }> {
+    async login(args: { email: string, password?: string }): Promise<{ success: boolean }> {
         const { email, password } = args;
         if (email !== undefined) {
             if (password !== undefined) {
                 return await new Promise((resolve, reject) => {
-                    signInWithEmailAndPassword(this.auth, email, password).then(credential => {
+                    signInWithEmailAndPassword(this.auth, email, password).then(async credential => {
                         console.log(credential);
                         // this.addAdmin();
-                        resolve({ success: true , msg: "" });
+                        resolve({ success: true });
                     }).catch((err: { code: string, message: string } ) => {
                         console.error(err.code);
                         reject(err.code);
@@ -71,7 +72,7 @@ export default class Firebase {
                 return await new Promise((resolve, reject) =>
                     signInWithEmailLink(this.auth, email, window.location.href).then(result => {
                         console.log(result);
-                        resolve({ success: true, msg: "normal" });
+                        resolve({ success: true });
                     }).catch((err: { code: string, message: string }) => {
                         // auth/invalid-email
                         // auth/invalid-action-code when link used to login
@@ -99,20 +100,18 @@ export default class Firebase {
             url: 'http://localhost:3000',
             handleCodeInApp: true
         };
-        await sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => console.log("success")).catch((err) => console.log("failed", err));
+        await sendSignInLinkToEmail(this.auth, email, actionCodeSettings);
     }
 
     isAnnoymousAccount() {
         return isSignInWithEmailLink(this.auth, window.location.href)
     }
 
-    // firestore
-
     addAdmin() {
-        setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, this.auth.currentUser!.email!), {
-            isAdmin: true
-        })
+        updateProfile(this.auth.currentUser!, { displayName: "admin" });
     }
+
+    // firestore
 
     onPendingAccountsChange(callback: (pendings: Array<PendingApplcation>) => void) {
         return onSnapshot(collection(this.firestore, COLLECTION.APPLICATION), collection => {
@@ -130,11 +129,18 @@ export default class Firebase {
         return !(await getDoc(doc(this.firestore, COLLECTION.USER_PROFILE, email))).exists();
     }
 
-    async updateUserProfile(profile: { email: string, name: string }) {
-        await setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, profile.email), {
+    async updateUserProfile(profile: { id: string, email: string, name: string }) {
+        await setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, profile.email).withConverter(userProfileConverter), {
+            id: profile.id,
             name: profile.name,
             email: profile.email
         })
+    }
+
+    async getUserProfile(userId: string) {
+        console.log(userId);
+        let profiles = await getDocs(query(collection(this.firestore, COLLECTION.USER_PROFILE).withConverter(userProfileConverter), where("id", "==", userId)));
+        return profiles.docs[0].data();
     }
 
     onCategoryUpdate(onUpdate: (categories: Array<Category>, update: Array<DocumentChange<Category>>) => void) {
@@ -164,7 +170,7 @@ export default class Firebase {
     // }
 
     async addCategory(categoryLabel: string, subCategories: Array<string>) {
-        if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY),where("title", "==", categoryLabel)))).empty) {
+        if (!(await getDocs(query(collection(this.firestore, COLLECTION.CATEGORY), where("title", "==", categoryLabel)))).empty) {
             console.warn("label exists");
             return;
         }

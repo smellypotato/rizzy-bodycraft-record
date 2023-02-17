@@ -1,7 +1,8 @@
-#loading {
+dialog {
     position: absolute;
     width: 100vw;
     height: 100vh;
+    height: 100svh;
     inset: 0 0 0 0;
     background-color: rgba(0 0 0 / 0.3);
     display: flex;
@@ -9,7 +10,7 @@
     align-items: center;
 }
 
-#loading #panel {
+dialog #panel {
     background-color: var(--color_white);
     border-radius: 2rem;
     padding: 8rem 4rem 12rem;

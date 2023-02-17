@@ -1,7 +1,8 @@
 #add_panel {
     background-color: rgba(0, 0, 0, 50%);
     width: 100vw;
-    height: 100vh;
+    height: 100vh;    
+    height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;

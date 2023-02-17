@@ -1,11 +1,19 @@
 #menu {
-    position: absolute;
-    top: 2rem;
-    right: 4rem;
+    position: fixed;
+    inset: 2rem 4rem auto;
+    display: flex;
+    justify-content: space-between;
+}
+#menu #greeting {
+    font-size: 4rem;
+    line-height: 5rem;
+    color: var(--color_prim);
+}
+#menu #navigations {
     display: flex;
     column-gap: 4rem;
 }
-#menu button {
+#menu div button {
     display: flex;
     align-items: center;
     column-gap: 2rem;
@@ -14,21 +22,21 @@
     line-height: 5rem;
     color: var(--color_prim);
 }
-#menu .icon {
+#menu div .icon {
     width: 5rem;
     height: 100%;
     background-size: var(--icon_size);
     filter: var(--filter_main);
 }
-#menu #home .icon {
+#menu div #home .icon {
     background: url(../../assets/home.svg) var(--bg_img_setting);
 }
-#menu #student_list .icon {
+#menu div #student_list .icon {
     background: url(../../assets/account.svg) var(--bg_img_setting);
 }
-#menu #categories .icon {
+#menu div #categories .icon {
     background: url(../../assets/record.svg) var(--bg_img_setting);
 }
-#menu #logout .icon {
+#menu div #logout .icon {
     background: url(../../assets/logout.svg) var(--bg_img_setting);
 }
