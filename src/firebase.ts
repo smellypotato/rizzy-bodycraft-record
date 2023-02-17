@@ -1,5 +1,5 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, User, UserCredential } from "firebase/auth";
+import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record } from "./type";
 const firebaseConfig = {
@@ -46,6 +46,7 @@ export default class Firebase {
 
     async signup(email: string, password: string, name: string) {
         updatePassword(this.auth.currentUser!, password).then(() => {
+            updateProfile(this.auth.currentUser!, { displayName: name });
             this.updateUserProfile({ email, name });
         }).catch(err => console.error(err));
     }
@@ -91,14 +92,14 @@ export default class Firebase {
         return onAuthStateChanged(this.auth, user => callback(user));
     }
 
-    approvePendingAccount(email: string) {
+    async approvePendingAccount(email: string) {
         const actionCodeSettings = {
             // URL you want to redirect back to. The domain (www.example.com) for this
             // URL must be in the authorized domains list in the Firebase Console.
             url: 'http://localhost:3000',
             handleCodeInApp: true
         };
-        sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => console.log("success")).catch((err) => console.log("failed", err));
+        await sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => console.log("success")).catch((err) => console.log("failed", err));
     }
 
     isAnnoymousAccount() {

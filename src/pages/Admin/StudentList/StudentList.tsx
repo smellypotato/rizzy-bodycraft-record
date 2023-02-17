@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
+import { SetModalContext } from "../../../hooks/contexts";
 import { PendingApplcation } from "../../../type";
 import "./StudentList.css";
 
 export const StudentList = () => {
+
+    const setModal = useContext(SetModalContext);
 
     const [pendingList, setPendingList] = useState<Array<PendingApplcation>>([]);
 
@@ -16,7 +20,9 @@ export const StudentList = () => {
     }, [])
 
     const approvePending = useCallback(async (application: PendingApplcation) => {
-        Firebase.instance.approvePendingAccount(application.email);
+        setModal(<Loading msg="正在批准用戶..."/>);
+        await Firebase.instance.approvePendingAccount(application.email);
+        setModal();
         // await Firebase.instance.removePendingAccount(id);
     }, []);
 

@@ -1,15 +1,17 @@
 import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../App";
+import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
-import { SetLoggedInContext } from "../../../hooks/contexts";
+import { SetLoggedInContext, SetModalContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./SignUp.css";
 
 export const SignUp = () => {
     const navigate = useNavigate();
     const setLoggedIn = useContext(SetLoggedInContext);
+    const setModal = useContext(SetModalContext);
     const [verifiedEmail, setVerifiedEmail] = useState(false);
     const [email, setEmail] = useInput("hksahenry@gmail.com");
     const [name, setName] = useInput("");
@@ -21,6 +23,7 @@ export const SignUp = () => {
     }, []);
 
     const onVerify = useCallback(async () => {
+        setModal(<Loading msg="Verifying email..." />);
         let verified = await Firebase.instance.login({ email: email });
         if (verified) {
             setLoggedIn(Firebase.instance.auth.currentUser !== null);
@@ -28,6 +31,7 @@ export const SignUp = () => {
             if (isNewAccount) setVerifiedEmail(true);
             else navigate(PATH.DASHBOARD);
         }
+        setModal();
     }, [email]);
 
     const onBackToLogin = useCallback(async () => {
@@ -35,8 +39,11 @@ export const SignUp = () => {
         navigate(PATH.LOGIN, { replace: true })
     }, []);
 
-    const onSignup = useCallback(() => {
-        Firebase.instance.signup(email, password, name);
+    const onSignup = useCallback(async () => {
+        setModal(<Loading msg="Signing up..." />);
+        await Firebase.instance.signup(email, password, name);
+        setModal();
+        navigate(PATH.DASHBOARD);
     }, [email, password, name]);
 
     return (

@@ -33,7 +33,7 @@ export const Login = () => {
                 <a id="login-forget">Forget password?</a>
                 <div id="login-buttons">
                     <button id="user" onClick={ onLogin }>Login</button>
-                    <button id="register" onClick={ () => navigate(PATH.SIGN_UP) }>Sign Up</button>
+                    <button id="register" onClick={ () => navigate(PATH.LOGIN) }>Sign Up</button>
                 </div>
             </section>
         </main>
