@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { Loading } from "./components/Loading/Loading";
 import { Menu } from "./components/Menu/Menu";
 import Firebase from "./firebase";
-import { SetLoggedInContext } from "./hooks/contexts";
+import { SetLoggedInContext, SetModalContext } from "./hooks/contexts";
 import { Categories } from "./pages/Admin/Categories/Categories";
 import { StudentList } from "./pages/Admin/StudentList/StudentList";
 import { Login } from "./pages/Login/Login";
@@ -29,6 +30,7 @@ const path = PATH.MY_RECORD;
 const App = () => {
     const navigate = useNavigate();
     const [loggedIn, setLoggedIn] = useState(false); // temp
+    const [modal, setModal] = useState<JSX.Element>();
 
     useEffect(() => {
         const fromEmailLink = Firebase.instance.isAnnoymousAccount();
@@ -37,6 +39,7 @@ const App = () => {
             console.log("auth state changed", user);
             console.log("from email link", fromEmailLink);
             if (user && !fromEmailLink) {
+                setModal(undefined);
                 setLoggedIn(true);
 
                 navigate(`${path}`);
@@ -54,21 +57,25 @@ const App = () => {
     }, []);
 
     return (
-        <div className="App">
-            { loggedIn && <Menu /> }
-            <SetLoggedInContext.Provider value={ setLoggedIn }>
-                <Routes>
-                    <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
-                    <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
-                    <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
-                    <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
-                    <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
-                    <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
-                    <Route path={ PATH.LOGIN } element={ <Login /> } />
-                    <Route path="*" element={ <Login /> } />
-                </Routes>
-            </SetLoggedInContext.Provider>
-        </div>
+        <SetModalContext.Provider value={ setModal }>
+            <div className="App">
+                { loggedIn && <Menu /> }
+                <SetLoggedInContext.Provider value={ setLoggedIn }>
+                    <Routes>
+                        <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
+                        <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
+                        <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
+                        <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
+                        <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
+                        <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
+                        <Route path={ PATH.LOGIN } element={ <Login /> } />
+                        <Route path="*" element={ <Login /> } />
+                    </Routes>
+                </SetLoggedInContext.Provider>
+                { modal && modal }
+            </div>
+        </SetModalContext.Provider>
+
     );
 }
 

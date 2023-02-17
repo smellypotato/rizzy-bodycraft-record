@@ -1,13 +1,16 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../App";
+import { Loading } from "../../components/Loading/Loading";
 import { Title } from "../../components/Title/Title";
 import Firebase from "../../firebase";
+import { SetModalContext } from "../../hooks/contexts";
 import { useInput } from "../../hooks/useInput";
 import "./Login.css";
 
 export const Login = () => {
     const navigate = useNavigate();
+    const setModal = useContext(SetModalContext);
 
     const [username, setUsername] = useInput("hksahenry@yahoo.com.hk");
     const [password, setPassword] = useInput("hksa13968629");
@@ -17,6 +20,7 @@ export const Login = () => {
     }, []);
 
     const onLogin = () => {
+        setModal(<Loading msg={ "正在登入..."} />);
         Firebase.instance.login({ email: username, password: password });
     };
 
