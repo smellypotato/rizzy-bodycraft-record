@@ -1,3 +1,9 @@
+main#dashboard {
+    padding-top: 12vh;
+}
+#dashboard > section {
+    margin-top: 6vh;
+}
 #dashboard #years {
     display: flex;
     flex-direction: row;
@@ -26,6 +32,7 @@
 }
 #dashboard .record {
     font-size: 3.5rem;
+    margin-bottom: 8rem;
 }
 #dashboard .record #date {
     width: 100%;

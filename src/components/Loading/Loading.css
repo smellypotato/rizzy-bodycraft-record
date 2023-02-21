@@ -1,4 +1,4 @@
-dialog {
+dialog#loading{
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -10,7 +10,7 @@ dialog {
     align-items: center;
 }
 
-dialog #panel {
+dialog#loading #panel {
     background-color: var(--color_white);
     border-radius: 2rem;
     padding: 8rem 4rem 12rem;

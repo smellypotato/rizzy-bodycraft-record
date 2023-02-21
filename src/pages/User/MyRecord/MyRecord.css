@@ -1,5 +1,9 @@
+#my_record {
+    padding-top: 12vh;
+}
 #my_record > section {
     width: clamp(400px, 70vw, 1290px);
+    margin-top: 8rem;
 }
 #my_record section #filters{
     display: grid;

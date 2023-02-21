@@ -50,10 +50,6 @@ export const Categories = () => {
         setCategoryId(categoryIdRef.current)
     }, [categoryIdRef.current]);
 
-    // const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
-    //     set(e.currentTarget.value);
-    // }, []);
-
     const currentCategory = useCallback(() => {
         if (categoryId) return categories.find(category => category.id === categoryId);
         else return undefined;
@@ -83,7 +79,7 @@ export const Categories = () => {
                     />
             </div>
         )
-    }, [activeDropdown, categories]);
+    }, [activeDropdown, categories, categoryId]);
 
     const optionRow = useCallback((details: Option) => {
         return (

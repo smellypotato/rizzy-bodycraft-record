@@ -1,6 +1,13 @@
 h1 {
-    font-size: 20rem;
+    font-size: 16rem;
+    line-height: 20rem;
     text-align: center;
     color: var(--color_prim);
-    font-family: Brush Script MT;
+    font-family: 'Great Vibes', cursive;
+}
+@media (max-width: 900px) {
+    h1 {
+        font-size: 0;
+        line-height: 0;
+    }
 }

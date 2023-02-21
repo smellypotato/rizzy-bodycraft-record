@@ -1,5 +1,9 @@
+#record_now {
+    padding-top: 12vh;
+}
 #record_now section {
     width: clamp(400px, 30vw, 600px);
+    margin-top: 8rem;
 }
 #record_now #content {
     display: flex;

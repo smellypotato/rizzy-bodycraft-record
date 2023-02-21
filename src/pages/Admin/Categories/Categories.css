@@ -1,8 +1,12 @@
+main#categories {
+    padding-top: 12vh;
+}
 #categories #content {
     display: flex;
     flex-direction: column;
     row-gap: 4rem;
     align-items: center;
+    margin-top: 8rem;
 }
 #categories #content #dropdown_big {
     width: clamp(400px, 30vw, 600px);

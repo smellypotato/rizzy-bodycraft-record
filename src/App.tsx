@@ -67,7 +67,7 @@ const App = () => {
         <UserInfoContext.Provider value={ userInfo }>
         <SetUserInfoContext.Provider value={ setUserInfo }>
             <div className="App">
-                { <Menu /> }
+                { userInfo && <Menu /> }
                 <Routes>
                     <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
                     <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
@@ -80,7 +80,7 @@ const App = () => {
                 </Routes>
                 { modal && modal }
             </div>
-        </SetUserInfoContext.Provider>    
+        </SetUserInfoContext.Provider>
         </UserInfoContext.Provider>
         </SetModalContext.Provider>
 
