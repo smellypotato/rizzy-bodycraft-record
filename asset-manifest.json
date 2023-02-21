@@ -1,23 +1,24 @@
 {
   "files": {
-    "main.css": "/rizzy-bodycraft-record/static/css/main.7356d5c0.css",
-    "main.js": "/rizzy-bodycraft-record/static/js/main.55ae6003.js",
+    "main.css": "/rizzy-bodycraft-record/static/css/main.c7b39443.css",
+    "main.js": "/rizzy-bodycraft-record/static/js/main.01cca9b1.js",
     "static/media/background.jpeg": "/rizzy-bodycraft-record/static/media/background.a7bcaa6889b5a63c5065.jpeg",
-    "static/media/circle.svg": "/rizzy-bodycraft-record/static/media/circle.99c69882b11e858f59dd.svg",
     "index.html": "/rizzy-bodycraft-record/index.html",
+    "static/media/circle.svg": "/rizzy-bodycraft-record/static/media/circle.99c69882b11e858f59dd.svg",
     "static/media/bin.svg": "/rizzy-bodycraft-record/static/media/bin.4fea9eba9cba4058d824.svg",
     "static/media/logout.svg": "/rizzy-bodycraft-record/static/media/logout.0e0c5b6e068ed8cab9e6.svg",
     "static/media/account.svg": "/rizzy-bodycraft-record/static/media/account.085d386a03d620ee8ccc.svg",
     "static/media/pen.svg": "/rizzy-bodycraft-record/static/media/pen.42479fc970b1ab3386bb.svg",
     "static/media/record.svg": "/rizzy-bodycraft-record/static/media/record.48ef429c5686ae68ae4f.svg",
     "static/media/cross.svg": "/rizzy-bodycraft-record/static/media/cross.fd7df6a76a05848d8d7a.svg",
+    "static/media/menu.svg": "/rizzy-bodycraft-record/static/media/menu.806b46a44664e28fe8c1.svg",
     "static/media/home.svg": "/rizzy-bodycraft-record/static/media/home.f5dcc99575de753e7739.svg",
     "static/media/arrow_down.svg": "/rizzy-bodycraft-record/static/media/arrow_down.7a6fb7813ea3115ed4ec.svg",
-    "main.7356d5c0.css.map": "/rizzy-bodycraft-record/static/css/main.7356d5c0.css.map",
-    "main.55ae6003.js.map": "/rizzy-bodycraft-record/static/js/main.55ae6003.js.map"
+    "main.c7b39443.css.map": "/rizzy-bodycraft-record/static/css/main.c7b39443.css.map",
+    "main.01cca9b1.js.map": "/rizzy-bodycraft-record/static/js/main.01cca9b1.js.map"
   },
   "entrypoints": [
-    "static/css/main.7356d5c0.css",
-    "static/js/main.55ae6003.js"
+    "static/css/main.c7b39443.css",
+    "static/js/main.01cca9b1.js"
   ]
 }
