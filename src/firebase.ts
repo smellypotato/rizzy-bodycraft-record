@@ -93,6 +93,15 @@ export default class Firebase {
         return onAuthStateChanged(this.auth, user => callback(user));
     }
 
+    async updatePassword(password: string) {
+        return await new Promise((resolve, reject) => updatePassword(this.auth.currentUser!, password).then((result) =>
+            resolve(result)
+        ).catch(err => reject(err)));
+        // Uncaught (in promise) FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password).
+        // Uncaught (in promise) FirebaseError: Firebase: Error (auth/requires-recent-login). => reauthenticateWithCredential
+
+    }
+
     async approvePendingAccount(email: string) {
         const actionCodeSettings = {
             // URL you want to redirect back to. The domain (www.example.com) for this

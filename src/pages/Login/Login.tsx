@@ -12,12 +12,8 @@ export const Login = () => {
     const navigate = useNavigate();
     const setModal = useContext(SetModalContext);
 
-    const [username, setUsername] = useInput("hksahenry@yahoo.com.hk");
-    const [password, setPassword] = useInput("hksa13968629");
-
-    const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
-        set(e.currentTarget.value);
-    }, []);
+    const [onInputUsername, username] = useInput("hksahenry@yahoo.com.hk");
+    const [onInputPassword, password] = useInput("hksa13968629");
 
     const onLogin = () => {
         setModal(<Loading msg={ "正在登入..."} />);
@@ -28,8 +24,8 @@ export const Login = () => {
         <main id="login">
             <Title />
             <section>
-                <input type="text" value={ username } placeholder="Username" onChange={ (e) => onInput(setUsername, e) } />
-                <input type="text" value={ password } placeholder="Password" onChange={ (e) => onInput(setPassword, e) } />
+                <input type="text" value={ username } placeholder="Username" onChange={ onInputUsername } />
+                <input type="text" value={ password } placeholder="Password" onChange={ onInputPassword } />
                 <a id="login-forget">Forget password?</a>
                 <div id="login-buttons">
                     <button id="user" onClick={ onLogin }>Login</button>

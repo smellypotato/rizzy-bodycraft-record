@@ -35,8 +35,9 @@
     transition: filter 0.1s, transform 0.1s;
 }
 #menu #panel div #home .icon { background: url(../../assets/home.svg) var(--bg_img_setting) }
-#menu #panel div #student_list .icon { background: url(../../assets/account.svg) var(--bg_img_setting) }
+#menu #panel div #student_list .icon { background: url(../../assets/account_list.svg) var(--bg_img_setting) }
 #menu #panel div #categories .icon { background: url(../../assets/record.svg) var(--bg_img_setting) }
+#menu #panel div #account .icon { background: url(../../assets/account.svg) var(--bg_img_setting) }
 #menu #panel div #logout .icon { background: url(../../assets/logout.svg) var(--bg_img_setting) }
 #menu #hamburger.icon {
     display: none;
@@ -64,7 +65,7 @@
         flex-direction: column;
         justify-content: flex-start;
         inset: 0 0 0 auto;
-        background-color: var(--color_prim_light);
+        background: linear-gradient(to left, var(--color_prim_light), var(--color_prim));
         padding: 11rem 0 4rem;
         transition: transform 0.1s, opacity 0.1s;
         color: var(--color_white);

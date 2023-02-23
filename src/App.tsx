@@ -3,15 +3,17 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { Loading } from "./components/Loading/Loading";
 import { Menu } from "./components/Menu/Menu";
 import Firebase from "./firebase";
-import { SetModalContext, SetUserInfoContext, UserInfoContext } from "./hooks/contexts";
+import { SetModalContext, UserInfoContext } from "./hooks/contexts";
 import { Categories } from "./pages/Admin/Categories/Categories";
 import { StudentList } from "./pages/Admin/StudentList/StudentList";
 import { Login } from "./pages/Login/Login";
+import { AccountSetting } from "./pages/User/AccountSetting/AccountSetting";
 import { Dashboard } from "./pages/User/Dashboard/Dashboard";
 import { MyRecord } from "./pages/User/MyRecord/MyRecord";
 import { RecordNow } from "./pages/User/RecordNow/RecordNow";
 import { SignUp } from "./pages/User/SignUp/Signup";
 import { User } from "./type";
+
 
 export enum PATH {
     LOGIN = "/rizzy-bodycraft-record/login",
@@ -20,12 +22,13 @@ export enum PATH {
     CATEGORIES = "/rizzy-bodycraft-record/categories",
     STUDENT_LIST = "/rizzy-bodycraft-record/student-list",
     RECORD_NOW = "/rizzy-bodycraft-record/record-now",
-    MY_RECORD = "/rizzy-bodycraft-record/my-record"
+    MY_RECORD = "/rizzy-bodycraft-record/my-record",
+    ACCOUNT = "/rizzy-bodycraft-record/account"
 }
 
 // const path = "dashboard";
 // const path = "student-list";
-const path = PATH.MY_RECORD;
+const path = PATH.DASHBOARD;
 
 
 const App = () => {
@@ -64,11 +67,11 @@ const App = () => {
 
     return (
         <SetModalContext.Provider value={ setModal }>
-        <UserInfoContext.Provider value={ userInfo }>
-        <SetUserInfoContext.Provider value={ setUserInfo }>
+        <UserInfoContext.Provider value={ [userInfo, setUserInfo] }>
             <div className="App">
                 { userInfo && <Menu /> }
                 <Routes>
+                    <Route path={ PATH.ACCOUNT } element={ <AccountSetting /> } />
                     <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
                     <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
                     <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
@@ -76,11 +79,10 @@ const App = () => {
                     <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
                     <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
                     <Route path={ PATH.LOGIN } element={ <Login /> } />
-                    <Route path="*" element={ <Login /> } />
+                    <Route path="/rizzy-bodycraft-record/*" element={ <Login /> } />
                 </Routes>
                 { modal && modal }
             </div>
-        </SetUserInfoContext.Provider>
         </UserInfoContext.Provider>
         </SetModalContext.Provider>
 

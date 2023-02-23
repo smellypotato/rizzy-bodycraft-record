@@ -1,0 +1,15 @@
+main#account_setting {
+    padding-top: 12vh;
+    font-size: 3.5rem;
+}
+
+#account_setting #change_password {
+    display: grid;
+    grid-column-gap: 4rem;
+    grid-row-gap: 2rem;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+}
+#account_setting h3 {
+    grid-column: 1 / 3;
+}

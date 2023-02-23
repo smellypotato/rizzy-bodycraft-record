@@ -4,23 +4,19 @@ import { PATH } from "../../../App";
 import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
-import { SetModalContext, SetUserInfoContext } from "../../../hooks/contexts";
+import { SetModalContext, UserInfoContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./SignUp.css";
 
 export const SignUp = () => {
     const navigate = useNavigate();
     const setModal = useContext(SetModalContext);
-    const setUserInfo = useContext(SetUserInfoContext);
+    const [_userInfo, setUserInfo] = useContext(UserInfoContext);
     const [verifiedEmail, setVerifiedEmail] = useState(false);
-    const [email, setEmail] = useInput("hksahenry@gmail.com");
-    const [name, setName] = useInput("");
-    const [password, setPassword] = useInput("");
-    const [confirmPassword, setConfirmPassword] = useInput("");
-
-    const onInput = useCallback((set: React.Dispatch<string>, e: React.ChangeEvent<HTMLInputElement>) => {
-        set(e.currentTarget.value);
-    }, []);
+    const [onInputEmail, email] = useInput("hksahenry@gmail.com");
+    const [onInputName, name] = useInput("");
+    const [onInputPassword, password] = useInput("");
+    const [onInputConfirmPassword, confirmPassword] = useInput("");
 
     const onVerify = useCallback(async () => {
         setModal(<Loading msg="Verifying email..." />);
@@ -57,7 +53,7 @@ export const SignUp = () => {
             { !verifiedEmail &&
                 <section id="verify_email">
                     <h3>Verify your email</h3>
-                    <input type="text" value={ email } placeholder="Email" onChange={ (e) => onInput(setEmail, e) } />
+                    <input type="text" value={ email } placeholder="Email" onChange={ onInputEmail } />
                     <button onClick={ onVerify }>Verify</button>
                     <button onClick={ onBackToLogin }>Back to Login</button>
                 </section>
@@ -71,15 +67,15 @@ export const SignUp = () => {
                     </div>
                     <div id="signup_row">
                         <div>Name:</div>
-                        <input type="text" value={ name } placeholder="Name" onChange={ (e) => onInput(setName, e) } />
+                        <input type="text" value={ name } placeholder="Name" onChange={ onInputName } />
                     </div>
                     <div id="signup_row">
                         <div>Password:</div>
-                        <input type="password" value={ password } placeholder="Password" onChange={ (e) => onInput(setPassword, e) } />
+                        <input type="password" value={ password } placeholder="Password" onChange={ onInputPassword } />
                     </div>
                     <div id="signup_row">
                         <div>Confirm Password:</div>
-                        <input type="password" value={ confirmPassword } placeholder="Confirm Password" onChange={ (e) => onInput(setConfirmPassword, e) } />
+                        <input type="password" value={ confirmPassword } placeholder="Confirm Password" onChange={ onInputConfirmPassword } />
                     </div>
                     <button onClick={ onSignup }>Sign Up</button>
                     <button onClick={ onBackToLogin }>Back to Login</button>
