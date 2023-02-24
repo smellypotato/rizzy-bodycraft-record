@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../App";
+import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
 import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
@@ -20,13 +21,14 @@ export const SignUp = () => {
 
     const onVerify = useCallback(async () => {
         setModal(<Loading msg="Verifying email..." />);
-        let verified = await Firebase.instance.login({ email: email });
-        if (verified) {
+        try {
+            let res = await Firebase.instance.login({ email: email });
+            if (!res.success) throw new Error(res.message);
             let isNewAccount = await Firebase.instance.checkNewAccount(email)
+            setModal();
             if (isNewAccount) setVerifiedEmail(true);
             else navigate(PATH.DASHBOARD);
-        }
-        setModal();
+        } catch (e) { setModal(<ErrorBox msg={ (e as Error).message } />) }
     }, [email]);
 
     const onBackToLogin = useCallback(async () => {

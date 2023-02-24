@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from "firebase/app";
+import { FirebaseApp, FirebaseError, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record, userProfileConverter, User as UserProfile } from "./type";
@@ -52,37 +52,31 @@ export default class Firebase {
         }).catch(err => console.error(err)));
     }
 
-    async login(args: { email: string, password?: string }): Promise<{ success: boolean }> {
+    async login(args: { email: string, password?: string }): Promise<{ success: boolean, message?: string }> {
         const { email, password } = args;
-        if (email !== undefined) {
+        if (email) {
             if (password !== undefined) {
-                return await new Promise((resolve, reject) => {
-                    signInWithEmailAndPassword(this.auth, email, password).then(async credential => {
-                        console.log(credential);
-                        // this.addAdmin();
-                        resolve({ success: true });
-                    }).catch((err: { code: string, message: string } ) => {
-                        console.error(err.code);
-                        reject(err.code);
-                    });
+                return signInWithEmailAndPassword(this.auth, email, password).then(async credential => {
+                    console.log(credential);
+                    // this.addAdmin();
+                    return { success: true }
+                }).catch(e => {
+                    // auth/too-many-requests
+                    return { success: false, message: (e as FirebaseError).code}
                 });
-            }
-            else {
+            } else {
                 console.log(email);
-                return await new Promise((resolve, reject) =>
-                    signInWithEmailLink(this.auth, email, window.location.href).then(result => {
-                        console.log(result);
-                        resolve({ success: true });
-                    }).catch((err: { code: string, message: string }) => {
-                        // auth/invalid-email
-                        // auth/invalid-action-code when link used to login
-                        console.error(err.code, err.message);
-                        reject(err.code)
-                    })
-                );
+                return signInWithEmailLink(this.auth, email, window.location.href).then(result => {
+                    console.log(result);
+                    return { success: true }
+                }).catch(e => {
+                    // auth/invalid-email
+                    // auth/invalid-action-code when link used to login
+                    return { success: false, message: (e as FirebaseError).code}
+                })
             }
         }
-        return Promise.reject("no email");
+        else return { success: false, message: "no email" };
     }
 
     async logout() {

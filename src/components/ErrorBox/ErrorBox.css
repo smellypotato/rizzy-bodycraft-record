@@ -1,0 +1,23 @@
+#error #panel {
+    background-color: var(--color_white);
+    border-radius: 2rem;
+    padding: 6rem 8rem 8rem;
+    font-size: 4rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
+    align-items: center;
+    min-width: 300px;
+    max-width: 500px;
+}
+#error #panel h3 {
+
+}
+#error #panel button {
+    margin-top: 4rem;
+    width: 80%;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: var(--color_red);
+    color: var(--color_white);
+}

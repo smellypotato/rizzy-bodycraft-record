@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../App";
+import { ErrorBox } from "../../components/ErrorBox/ErrorBox";
 import { Loading } from "../../components/Loading/Loading";
 import { Title } from "../../components/Title/Title";
 import Firebase from "../../firebase";
@@ -15,9 +16,13 @@ export const Login = () => {
     const [onInputUsername, username] = useInput("hksahenry@yahoo.com.hk");
     const [onInputPassword, password] = useInput("hksa13968629");
 
-    const onLogin = () => {
+    const onLogin = async () => {
         setModal(<Loading msg={ "正在登入..."} />);
-        Firebase.instance.login({ email: username, password: password });
+        try {
+            let res = await Firebase.instance.login({ email: username, password: password });
+            if (!res.success) throw new Error(res.message)
+        }
+        catch (e) { setModal(<ErrorBox msg={ (e as Error).message } />) }
     };
 
     return (

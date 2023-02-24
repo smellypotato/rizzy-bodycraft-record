@@ -46,6 +46,16 @@ button {
     -ms-user-select: none;
     user-select: none;
 }
+dialog {
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    inset: 0 0 0 0;
+    background-color: rgba(0 0 0 / 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 input {
     background-color: var(--color_white);
     border-radius: 8px;

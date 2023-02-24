@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Loading } from "../../../components/Loading/Loading";
-import { Error } from "../../../components/Error/Error";
+import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
 import { FirebaseError } from "@firebase/util";
@@ -29,7 +29,7 @@ export const StudentList = () => {
         }
         catch (e) {
             console.log((e as FirebaseError).code);
-            setModal(<Error msg={ (e as FirebaseError).code } />);
+            setModal(<ErrorBox msg={ (e as FirebaseError).code } />);
         }
         // await Firebase.instance.removePendingAccount(id);
     }, []);

@@ -1,12 +1,4 @@
-#add_panel {
-    background-color: rgba(0, 0, 0, 50%);
-    width: 100vw;
-    height: 100vh;    
-    height: 100svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+#add_panel { background-color: rgba(0, 0, 0, 50%) }
 #add_panel #panel{
     background-color: var(--color_background_grey);
     width: clamp(400px, 40vw, 750px);

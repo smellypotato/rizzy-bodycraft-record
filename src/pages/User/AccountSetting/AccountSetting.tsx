@@ -1,10 +1,12 @@
 import { useCallback, useContext, useState } from "react";
 import { Loading } from "../../../components/Loading/Loading";
+import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
 import { SetModalContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./AccountSetting.css";
+import { FirebaseError } from "@firebase/util";
 
 export const AccountSetting = () => {
 
@@ -15,8 +17,13 @@ export const AccountSetting = () => {
 
     const onUpdatePassword = useCallback(async (oldPassword: string, newPassword: string, confirmPassword: string) => {
         setModal(<Loading msg="Updating password..." />);
-        console.log(await Firebase.instance.updatePassword(newPassword));
-        setModal();
+        try {
+            await Firebase.instance.updatePassword(newPassword);
+            setModal();
+        } catch (e) {
+            console.log(e);
+            setModal(<ErrorBox msg={ (e as FirebaseError).code } />)
+        }
     }, [])
 
     return (
