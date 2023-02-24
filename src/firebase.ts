@@ -19,6 +19,11 @@ enum COLLECTION {
     RECORD = "record"
 }
 
+type Response = {
+    success: boolean,
+    message?: string
+}
+
 export default class Firebase {
 
     private static _inst: Firebase;
@@ -44,19 +49,22 @@ export default class Firebase {
 
     // auth
 
-    async signup(email: string, password: string, name: string): Promise<string> {
-        return await new Promise(resolve => updatePassword(this.auth.currentUser!, password).then(() => {
-            this.updateUserProfile({ id: this.auth.currentUser!.uid, email, name });
-            this.login({ email, password });
-            resolve(this.auth.currentUser!.uid);
-        }).catch(err => console.error(err)));
+    async signup(email: string, password: string, name: string): Promise<Response> {
+        return updatePassword(this.auth.currentUser!, password).then(() => {
+            try {
+                this.updateUserProfile({ id: this.auth.currentUser!.uid, email, name });
+                this.login({ email, password });
+                return { success: true, message: this.auth.currentUser!.uid };
+            }
+            catch (e) { return { success: false, message: (e as FirebaseError).code } };
+        }).catch(e => { return { success: false, message: (e as FirebaseError).code} });
     }
 
-    async login(args: { email: string, password?: string }): Promise<{ success: boolean, message?: string }> {
+    async login(args: { email: string, password?: string }): Promise<Response> {
         const { email, password } = args;
         if (email) {
             if (password !== undefined) {
-                return signInWithEmailAndPassword(this.auth, email, password).then(async credential => {
+                return signInWithEmailAndPassword(this.auth, email, password).then(credential => {
                     console.log(credential);
                     // this.addAdmin();
                     return { success: true }
@@ -87,7 +95,7 @@ export default class Firebase {
         return onAuthStateChanged(this.auth, user => callback(user));
     }
 
-    async updatePassword(oldPassword: string, password: string): Promise<{ success: boolean, message?: string }> {
+    async updatePassword(oldPassword: string, password: string): Promise<Response> {
         try { await reauthenticateWithCredential(this.auth.currentUser!, EmailAuthProvider.credential(this.auth.currentUser!.email!, oldPassword)) }
         catch (e) { return { success: false, message: (e as FirebaseError).code } }
         // auth/wrong-password
@@ -136,12 +144,12 @@ export default class Firebase {
         return !(await getDoc(doc(this.firestore, COLLECTION.USER_PROFILE, email))).exists();
     }
 
-    async updateUserProfile(profile: { id: string, email: string, name: string }) {
-        await setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, profile.email).withConverter(userProfileConverter), {
-            id: profile.id,
+    async updateUserProfile(profile: { id?: string, email?: string, name: string }): Promise<Response> {
+        return setDoc(doc(this.firestore, COLLECTION.USER_PROFILE, profile.email || this.auth.currentUser!.email!).withConverter(userProfileConverter), {
+            id: profile.id || this.auth.currentUser!.uid,
             name: profile.name,
-            email: profile.email
-        })
+            email: profile.email || this.auth.currentUser!.email
+        }).then(() => { return { success: true } }).catch(e => { return { success: false, message: (e as FirebaseError).code } });
     }
 
     async getUserProfile(userId: string) {

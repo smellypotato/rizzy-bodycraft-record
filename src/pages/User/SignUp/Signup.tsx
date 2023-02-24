@@ -14,7 +14,7 @@ export const SignUp = () => {
     const setModal = useContext(SetModalContext);
     const [_userInfo, setUserInfo] = useContext(UserInfoContext);
     const [verifiedEmail, setVerifiedEmail] = useState(false);
-    const [onInputEmail, email] = useInput("hksahenry@gmail.com");
+    const [onInputEmail, email] = useInput("");
     const [onInputName, name] = useInput("");
     const [onInputPassword, password] = useInput("");
     const [onInputConfirmPassword, confirmPassword] = useInput("");
@@ -37,16 +37,19 @@ export const SignUp = () => {
     }, []);
 
     const onSignup = useCallback(async () => {
-        setModal(<Loading msg="Signing up..." />);
-        let id = await Firebase.instance.signup(email, password, name);
-        setModal();
-        setUserInfo({
-            id: id,
-            email: email,
-            name: name,
-            admin: false
-        })
-        navigate(PATH.DASHBOARD);
+        try {
+            setModal(<Loading msg="Signing up..." />);
+            let res = await Firebase.instance.signup(email, password, name);
+            if (!res.success) throw new Error(res.message);
+            setModal();
+            setUserInfo({
+                id: res.message!,
+                email: email,
+                name: name,
+                admin: false
+            })
+            navigate(PATH.DASHBOARD);
+        } catch (e) { setModal(<ErrorBox msg={ (e as Error).message } />) }
     }, [email, password, name]);
 
     return (

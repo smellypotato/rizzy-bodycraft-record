@@ -43,9 +43,8 @@ const App = () => {
             console.log("auth state changed", user);
             console.log("from email link", fromEmailLink);
             if (user && !fromEmailLink) {
-                setModal(undefined);
                 let userInfo = await Firebase.instance.getUserProfile(user.uid);
-
+                setModal(undefined);
                 setUserInfo({
                     id: userInfo.id,
                     email: userInfo.email,

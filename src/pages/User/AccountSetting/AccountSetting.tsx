@@ -3,16 +3,34 @@ import { Loading } from "../../../components/Loading/Loading";
 import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
-import { SetModalContext } from "../../../hooks/contexts";
+import { SetModalContext, UserInfoContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./AccountSetting.css";
 
 export const AccountSetting = () => {
 
     const setModal = useContext(SetModalContext);
+    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+
+    const [onInputName, name, setInputName] = useInput(userInfo?.name || "");
     const [onInputOldPassword, oldPassword, setOldPassword] = useInput("");
     const [onInputNewPassword, newPassword, setPassword] = useInput("");
     const [onInputConfirmPassword, confirmPassword, setConfirmPassword] = useInput("");
+
+    const onUpdatePersonalInfo = useCallback(async (name: string) => {
+        try {
+            if (name.length === 0) throw new Error("Empty field");
+            setModal(<Loading msg="Updating profile..." />);
+            let res = await Firebase.instance.updateUserProfile({ name });
+            if (res.success) {
+                setUserInfo(Object.assign({}, userInfo, { name }));
+                setModal();
+            }
+            else throw new Error(res.message);
+        } catch (e) {
+            setModal(<ErrorBox msg={ (e as Error).message } />)
+        }
+    }, []);
 
     const onUpdatePassword = useCallback(async (oldPassword: string, newPassword: string, confirmPassword: string) => {
         try {
@@ -37,8 +55,9 @@ export const AccountSetting = () => {
             <Title />
             <section id="personal_info">
                 <h3>Personal Info</h3>
-
-                <button>Update</button>
+                <div>Name</div>
+                <input value={ name } onChange={ onInputName } />
+                <button onClick={ () => onUpdatePersonalInfo(name) }>Update</button>
             </section>
             <section id="change_password">
                 <h3>Password Setting</h3>

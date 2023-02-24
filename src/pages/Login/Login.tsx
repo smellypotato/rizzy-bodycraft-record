@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../App";
 import { ErrorBox } from "../../components/ErrorBox/ErrorBox";
@@ -13,8 +13,8 @@ export const Login = () => {
     const navigate = useNavigate();
     const setModal = useContext(SetModalContext);
 
-    const [onInputUsername, username] = useInput("hksahenry@yahoo.com.hk");
-    const [onInputPassword, password] = useInput("hksa13968629");
+    const [onInputUsername, username] = useInput("");
+    const [onInputPassword, password] = useInput("");
 
     const onLogin = async () => {
         setModal(<Loading msg={ "正在登入..."} />);
