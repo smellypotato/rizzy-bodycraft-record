@@ -1,5 +1,5 @@
 import { FirebaseApp, FirebaseError, initializeApp } from "firebase/app";
-import { Auth, createUserWithEmailAndPassword, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
+import { Auth, createUserWithEmailAndPassword, EmailAuthProvider, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, reauthenticateWithCredential, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record, userProfileConverter, User as UserProfile } from "./type";
 const firebaseConfig = {
@@ -87,10 +87,14 @@ export default class Firebase {
         return onAuthStateChanged(this.auth, user => callback(user));
     }
 
-    async updatePassword(password: string) {
-        return await new Promise((resolve, reject) => updatePassword(this.auth.currentUser!, password).then((result) =>
-            resolve(result)
-        ).catch(err => reject(err)));
+    async updatePassword(oldPassword: string, password: string): Promise<{ success: boolean, message?: string }> {
+        try { await reauthenticateWithCredential(this.auth.currentUser!, EmailAuthProvider.credential(this.auth.currentUser!.email!, oldPassword)) }
+        catch (e) { return { success: false, message: (e as FirebaseError).code } }
+        // auth/wrong-password
+
+        return updatePassword(this.auth.currentUser!, password).then(() => {
+            return { success: true }
+        }).catch(e => { return { success: false, message: (e as FirebaseError).code } });
         // Uncaught (in promise) FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password).
         // Uncaught (in promise) FirebaseError: Firebase: Error (auth/requires-recent-login). => reauthenticateWithCredential
 

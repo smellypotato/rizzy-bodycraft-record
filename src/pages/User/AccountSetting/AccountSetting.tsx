@@ -6,23 +6,29 @@ import Firebase from "../../../firebase";
 import { SetModalContext } from "../../../hooks/contexts";
 import { useInput } from "../../../hooks/useInput";
 import "./AccountSetting.css";
-import { FirebaseError } from "@firebase/util";
 
 export const AccountSetting = () => {
 
     const setModal = useContext(SetModalContext);
-    const [onInputOldPassword, oldPassword] = useInput("");
-    const [onInputNewdPassword, newPassword] = useInput("");
-    const [onInputConfirmPassword, confirmPassword] = useInput("");
+    const [onInputOldPassword, oldPassword, setOldPassword] = useInput("");
+    const [onInputNewPassword, newPassword, setPassword] = useInput("");
+    const [onInputConfirmPassword, confirmPassword, setConfirmPassword] = useInput("");
 
     const onUpdatePassword = useCallback(async (oldPassword: string, newPassword: string, confirmPassword: string) => {
-        setModal(<Loading msg="Updating password..." />);
         try {
-            await Firebase.instance.updatePassword(newPassword);
+            if (oldPassword.length === 0 || newPassword.length === 0 || confirmPassword.length === 0) throw Error("Empty password");
+            if (newPassword.length < 6) throw Error("auth/weak-password");
+            if (newPassword !== confirmPassword) throw Error("Unmatched password");
+            setModal(<Loading msg="Updating password..." />);
+
+            let res = await Firebase.instance.updatePassword(oldPassword, newPassword);
+            if (!res.success) throw new Error(res.message)
+            setOldPassword("");
+            setPassword("");
+            setConfirmPassword("");
             setModal();
         } catch (e) {
-            console.log(e);
-            setModal(<ErrorBox msg={ (e as FirebaseError).code } />)
+            setModal(<ErrorBox msg={ (e as Error).message } />)
         }
     }, [])
 
@@ -39,7 +45,7 @@ export const AccountSetting = () => {
                 <div>Old password</div>
                 <input value={ oldPassword } onChange={ onInputOldPassword } />
                 <div>New password</div>
-                <input value={ newPassword } onChange={ onInputNewdPassword } />
+                <input value={ newPassword } onChange={ onInputNewPassword } />
                 <div>Confirm new password</div>
                 <input value={ confirmPassword } onChange={ onInputConfirmPassword } />
                 <button onClick={ () => onUpdatePassword(oldPassword, newPassword, confirmPassword)}>Update</button>
