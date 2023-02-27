@@ -11,19 +11,23 @@ import { AccountSetting } from "./pages/User/AccountSetting/AccountSetting";
 import { Dashboard } from "./pages/User/Dashboard/Dashboard";
 import { MyRecord } from "./pages/User/MyRecord/MyRecord";
 import { RecordNow } from "./pages/User/RecordNow/RecordNow";
+import { Register } from "./pages/User/Register/Register";
 import { SignUp } from "./pages/User/SignUp/Signup";
 import { User } from "./type";
 
 
+
+
 export enum PATH {
     LOGIN = "/rizzy-bodycraft-record/login",
+    REGISTER = "/rizzy-bodycraft-record/register",
     SIGN_UP = "/rizzy-bodycraft-record/signup",
     DASHBOARD = "/rizzy-bodycraft-record/dashboard",
     CATEGORIES = "/rizzy-bodycraft-record/categories",
     STUDENT_LIST = "/rizzy-bodycraft-record/student-list",
     RECORD_NOW = "/rizzy-bodycraft-record/record-now",
     MY_RECORD = "/rizzy-bodycraft-record/my-record",
-    ACCOUNT = "/rizzy-bodycraft-record/account"
+    ACCOUNT = "/rizzy-bodycraft-record/account",
 }
 
 const App = () => {
@@ -79,6 +83,7 @@ const App = () => {
                         <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
                         <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
                         <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
+                        <Route path={ PATH.REGISTER } element={ <Register /> } />
                         <Route path={ PATH.LOGIN } element={ <Login /> } />
                         <Route path="/rizzy-bodycraft-record/*" element={ <Login /> } />
                     </Routes>

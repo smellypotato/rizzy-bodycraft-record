@@ -1,5 +1,4 @@
 import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
-
 export type User = {
     id: string,
     name: string,
@@ -11,7 +10,7 @@ export type PendingApplcation = {
     id: string,
     name: string,
     email: string
-    // apply_date:
+    apply_date: Date;
 }
 
 export type Option = {
@@ -32,6 +31,19 @@ export type Record = {
     type: string,
     date: Date,
     options: Array<Array<{ optionId: string, value: string }>>
+}
+export const applicationConverter = {
+    toFirestore: (application: PendingApplcation) => { return { email: application.email, name: application.name, apply_date: new Date() } },
+    fromFirestore: (snapshot: QueryDocumentSnapshot): PendingApplcation => {
+        type subPendingApplication = {
+            email: string;
+            name: string;
+            apply_date: Date;
+        }
+        const data = snapshot.data() as subPendingApplication;
+        const obj = Object.assign({ id: snapshot.id }, data);
+        return obj;
+    }
 }
 export const userProfileConverter = {
     toFirestore: (user: User) => { return { id: user.id, email: user.email, name: user.name } },

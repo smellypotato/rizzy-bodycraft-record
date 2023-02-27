@@ -1,0 +1,39 @@
+main#register {
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 10%;
+    padding-bottom: 15vh;
+}
+
+#register section {
+    display: flex;
+    flex-direction: column;
+    width: clamp(300px, 50vw, 500px);
+    margin: 0 auto;
+}
+
+#register input {
+    width: 100%;
+    margin-top: 4rem;
+}
+#register section #buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 10%;
+    margin-top: 7rem;
+}
+#register section #buttons > button {
+    border-radius: 8px;
+    padding: 2rem 0;
+    font-size: 3rem;
+    color: var(--color_white);
+}
+#register section #buttons > button#submit {
+    background-color: var(--color_prim);
+}
+#register section #buttons > button#back {
+    background-color: var(--color_prim_light);
+}

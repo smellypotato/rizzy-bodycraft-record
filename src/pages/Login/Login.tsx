@@ -29,12 +29,13 @@ export const Login = () => {
         <main id="login">
             <Title />
             <section>
+                <h3>Login</h3>
                 <input type="text" value={ username } placeholder="Username" onChange={ onInputUsername } />
                 <input type="text" value={ password } placeholder="Password" onChange={ onInputPassword } />
                 <a id="login-forget">Forget password?</a>
                 <div id="login-buttons">
                     <button id="user" onClick={ onLogin }>Login</button>
-                    <button id="register" onClick={ () => navigate(PATH.LOGIN) }>Sign Up</button>
+                    <button id="register" onClick={ () => navigate(PATH.REGISTER) }>Sign Up</button>
                 </div>
             </section>
         </main>

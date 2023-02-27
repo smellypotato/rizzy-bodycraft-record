@@ -1,7 +1,7 @@
 import { FirebaseApp, FirebaseError, initializeApp } from "firebase/app";
 import { Auth, createUserWithEmailAndPassword, EmailAuthProvider, getAdditionalUserInfo, getAuth, isSignInWithEmailLink, onAuthStateChanged, reauthenticateWithCredential, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signOut, updatePassword, updateProfile, User, UserCredential } from "firebase/auth";
 import { addDoc, collection, deleteDoc, deleteField, doc, DocumentChange, Firestore, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record, userProfileConverter, User as UserProfile } from "./type";
+import { PendingApplcation, optionConverter, Option, categoryConverter, Category, recordConverter, Record, userProfileConverter, User as UserProfile, applicationConverter } from "./type";
 const firebaseConfig = {
   apiKey: "AIzaSyDHTYHXBArEA-6bqGFdbqsG1_KLuzGRE2I",
   authDomain: "rizzy-bodycraft-record.firebaseapp.com",
@@ -128,11 +128,32 @@ export default class Firebase {
 
     // firestore
 
+    async register(name: string, email: string): Promise<Response> {
+        console.log(email);
+        const [existingApplication, existingAccount] = await Promise.all([
+            getDocs(query(collection(this.firestore, COLLECTION.APPLICATION), where("email", "==", email))),
+            getDoc(doc(this.firestore, COLLECTION.USER_PROFILE, email))
+        ]);
+        console.log(existingAccount);
+        if (existingApplication.empty && !existingAccount.exists()) {
+            let obj = {
+                id: "",
+                name: name,
+                email: email
+            }
+            return addDoc(collection(this.firestore, COLLECTION.APPLICATION).withConverter(applicationConverter), obj)
+                .then(() => { return { success: true } })
+                .catch(e => { return { success: false, message: (e as FirebaseError).code } });
+        } else {
+            return { success: false, message: !existingApplication.empty ? "application-pending" : "account-exist" }
+        }
+    }
+
     onPendingAccountsChange(callback: (pendings: Array<PendingApplcation>) => void) {
-        return onSnapshot(collection(this.firestore, COLLECTION.APPLICATION), collection => {
+        return onSnapshot(collection(this.firestore, COLLECTION.APPLICATION).withConverter(applicationConverter), collection => {
             let pendings: Array<PendingApplcation> = [];
-            collection.forEach(application => pendings.push(Object.assign({ id: application.id }, application.data() as { name: string, email: string })));
-            callback(pendings)
+            collection.forEach(application => pendings.push(application.data()));
+            callback(pendings);
         })
     }
 

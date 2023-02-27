@@ -67,4 +67,5 @@ h3 {
     color: var(--color_prim_light);
     font-size: 4rem;
     font-weight: bold;
+    text-align: center;
 }
