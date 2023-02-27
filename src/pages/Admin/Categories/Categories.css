@@ -39,7 +39,7 @@ main#categories {
     height: 30px;
     width: 50%;
 }
-#categories #dropdown_big > button {
+#categories #dropdown_big > #delete {
     width: 100px;
     height: 7.5rem;
     position: absolute;
@@ -55,9 +55,16 @@ main#categories {
     justify-content: center;
     column-gap: 1rem;
 }
-#categories #dropdown_big > button .bin {
+#categories #dropdown_big > #delete .bin {
     background: url(../../../assets/bin.svg) var(--bg_img_setting);
     background-size: contain;
     height: 4rem;
     aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 750px) {
+    #categories #dropdown_big > #delete {
+        right: 0;
+        top: calc(-100% - 2rem);
+    }
 }

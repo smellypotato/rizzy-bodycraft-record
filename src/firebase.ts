@@ -255,7 +255,7 @@ export default class Firebase {
         })
     }
 
-    async submitRecord(categoryId: string, type: string, date: Date, record: Array<Array<{ optionId: string, value?: string }>>) {
+    async submitRecord(categoryId: string, type: string, date: Date, record: Array<Array<{ optionId: string, value?: string }>>): Promise<Response> {
         let obj = {
             userId: this.auth.currentUser!.uid,
             categoryId: categoryId,
@@ -263,7 +263,9 @@ export default class Firebase {
             date: date,
             options: record
         }
-        addDoc(collection(this.firestore, COLLECTION.RECORD).withConverter(recordConverter), obj);
+        return addDoc(collection(this.firestore, COLLECTION.RECORD).withConverter(recordConverter), obj).then(() => {
+            return { success: true }
+        }).catch(e => { return { success: false, message: (e as FirebaseError).code } });
     }
 
     async getRecord() {

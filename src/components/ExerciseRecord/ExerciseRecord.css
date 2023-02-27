@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 2.5rem;
+    row-gap: 1rem;
     max-width: 75vw;
 }
 #exercise_record #record_table {
@@ -26,6 +26,7 @@
     row-gap: 1.5rem;
     overflow-x: scroll;
     overflow-y: hidden;
+    padding-top: 1.5rem;
 }
 #exercise_record #record_table #calendar::-webkit-scrollbar {
     display: block;

@@ -1,5 +1,5 @@
 main#dashboard {
-    padding-top: 12vh;
+    padding: 12vh 0 12rem 0;
 }
 #dashboard > section {
     margin-top: 6vh;

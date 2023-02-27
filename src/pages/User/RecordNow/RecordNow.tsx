@@ -1,9 +1,14 @@
 import { Unsubscribe } from "@firebase/firestore";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../../App";
 import { CalendarDisplay } from "../../../components/calendar/calendarDisplay";
 import { DropdownMenu } from "../../../components/DropdownMenu/DropdownMenu";
+import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
+import { Loading } from "../../../components/Loading/Loading";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
+import { SetModalContext } from "../../../hooks/contexts";
 import { useCloseDropdown } from "../../../hooks/useCloseDropdown";
 import { Category, Option } from "../../../type";
 import { Utils } from "../../../Utils";
@@ -11,6 +16,8 @@ import "./RecordNow.css";
 
 export const RecordNow = () => {
     const initted = useRef(false);
+    const navigate = useNavigate();
+    const setModal = useContext(SetModalContext);
     const [activeDropdown, setActiveDropdown] = useState<string>();
     const [categories, setCategories] = useState<Array<Category>>([]);
     const categoryIdRef = useRef<string>();
@@ -107,9 +114,17 @@ export const RecordNow = () => {
         )
     }
 
-    const onSubmit = (fm: typeof form) => {
+    const onSubmit = async (fm: typeof form) => {
         if (!type || fm.find(f => f.find(opt => !opt.value))) console.warn("undefined value exists!")
-        else Firebase.instance.submitRecord(categoryId!, type, date, fm);
+        else {
+            try {
+                setModal(<Loading msg="Submitting record..." />);
+                await Firebase.instance.submitRecord(categoryId!, type, date, fm);
+                setModal();
+                navigate(PATH.DASHBOARD)
+            }
+            catch (e) { setModal(<ErrorBox msg={ (e as Error).message } />) }
+        }
     }
 
     const onReset = () => {
@@ -123,6 +138,7 @@ export const RecordNow = () => {
         <main id="record_now">
             <Title />
             <section id="content">
+                <h3>New record</h3>
                 <DropdownMenu
                     onOpen={ () => setActiveDropdown("category") }
                     onClose={ () => setActiveDropdown(undefined) }
