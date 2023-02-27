@@ -26,15 +26,11 @@ export enum PATH {
     ACCOUNT = "/rizzy-bodycraft-record/account"
 }
 
-// const path = "dashboard";
-// const path = "student-list";
-const path = PATH.DASHBOARD;
-
-
 const App = () => {
     const navigate = useNavigate();
     const [modal, setModal] = useState<JSX.Element>();
     const [userInfo, setUserInfo] = useState<User>();
+    const [inited, setInited] = useState(false);
 
     useEffect(() => {
         const fromEmailLink = Firebase.instance.isAnnoymousAccount();
@@ -51,38 +47,45 @@ const App = () => {
                     name: userInfo.name,
                     admin: user.displayName === "admin"
                 })
-                navigate(`${path}`);
+                navigate(user.displayName === "admin" ? PATH.CATEGORIES : PATH.DASHBOARD, { replace: true });
             }
             else if (!fromEmailLink) {
                 console.log("to login");
                 setUserInfo(undefined);
-                navigate(PATH.LOGIN);
+                navigate(PATH.LOGIN, { replace: true });
             }
+            setInited(true);
         })
         return () => {
             unSubscribeAuthStateChange();
         }
     }, []);
 
+    useEffect(() => {
+        !inited ? setModal(<Loading msg={ "正在嘗試登入，請稍候..." } />) : setModal(undefined);
+    }, [inited]);
+
     return (
         <SetModalContext.Provider value={ setModal }>
-        <UserInfoContext.Provider value={ [userInfo, setUserInfo] }>
-            <div className="App">
-                { userInfo && <Menu /> }
-                <Routes>
-                    <Route path={ PATH.ACCOUNT } element={ <AccountSetting /> } />
-                    <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
-                    <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
-                    <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
-                    <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
-                    <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
-                    <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
-                    <Route path={ PATH.LOGIN } element={ <Login /> } />
-                    <Route path="/rizzy-bodycraft-record/*" element={ <Login /> } />
-                </Routes>
-                { modal && modal }
-            </div>
-        </UserInfoContext.Provider>
+        { inited &&
+            <UserInfoContext.Provider value={ [userInfo, setUserInfo] }>
+                <div className="App">
+                    { userInfo && <Menu /> }
+                    <Routes>
+                        <Route path={ PATH.ACCOUNT } element={ <AccountSetting /> } />
+                        <Route path={ PATH.MY_RECORD } element={ <MyRecord /> } />
+                        <Route path={ PATH.RECORD_NOW } element={ <RecordNow /> } />
+                        <Route path={ PATH.STUDENT_LIST } element={ <StudentList /> } />
+                        <Route path={ PATH.CATEGORIES } element={ <Categories /> } />
+                        <Route path={ PATH.DASHBOARD } element={ <Dashboard /> } />
+                        <Route path={ PATH.SIGN_UP } element={ <SignUp /> } />
+                        <Route path={ PATH.LOGIN } element={ <Login /> } />
+                        <Route path="/rizzy-bodycraft-record/*" element={ <Login /> } />
+                    </Routes>
+                </div>
+            </UserInfoContext.Provider>
+        }
+        { modal && modal }
         </SetModalContext.Provider>
 
     );

@@ -15,8 +15,9 @@ export const Menu = () => {
 
     return (
         <div id="menu" aria-modal={ opened }>
-            <section id="panel">
-                <div id="greeting">{ userInfo && `Welcome back, ${userInfo!.name}` }</div>
+            <button id="back" className="icon" onClick={ () => navigate(-1) } />
+            <section id="panel">    
+                <div id="greeting"><button id="back" className="icon" onClick={ () => navigate(-1) } />{ userInfo && `Welcome back, ${userInfo!.name}` }</div>
                 <div id="navigations">
                     { userInfo && <button id="home" onClick={ () => navigate(PATH.DASHBOARD) }><div className="icon"/>Dashboard</button> }
                     { userInfo?.admin && <button id="student_list" onClick={ () => navigate(PATH.STUDENT_LIST) }><div className="icon"/>Student List</button> }

@@ -8,6 +8,8 @@
 #menu #panel #greeting {
     font-size: 3.5rem;
     line-height: 5rem;
+    display: flex;
+    column-gap: 4rem;
 }
 #menu #panel #navigations {
     display: flex;
@@ -29,10 +31,14 @@
     filter: var(--filter_main);
 }
 #menu #back.icon {
-    display: none;
     height: 5rem;
-    background: url(../../assets/menu.svg) var(--bg_img_setting);
-    transition: filter 0.1s, transform 0.1s;
+    background: url(../../assets/back.svg) var(--bg_img_setting);
+}
+#menu > #back {
+    position:absolute;
+    display: none;
+    inset: 4rem auto auto 2rem;
+    pointer-events: auto !important;
 }
 #menu #panel div #home .icon { background: url(../../assets/home.svg) var(--bg_img_setting) }
 #menu #panel div #student_list .icon { background: url(../../assets/account_list.svg) var(--bg_img_setting) }
@@ -64,7 +70,7 @@
     #menu #panel {
         flex-direction: column;
         justify-content: flex-start;
-        inset: 0 0 0 auto;
+        inset: 0 0 0 50%;
         background: linear-gradient(to left, var(--color_prim_light), var(--color_prim));
         padding: 11rem 0 4rem;
         transition: transform 0.1s, opacity 0.1s;
@@ -77,24 +83,22 @@
         border-bottom: 1px solid var(--color_prim);
         padding: 0 2rem 2rem 2rem;
         font-size: 3rem;
+        justify-content: flex-end;
     }
     #menu #panel #navigations{
         flex-direction: column;
-        row-gap: 4rem;
+        row-gap: 2rem;
         padding: 4rem 2rem 0;
         align-items: flex-end;
     }
     #menu #panel div button {
         flex-direction: row-reverse;
+        width: 100%;
+        padding: 1rem 2rem;
     }
-    #menu .icon { filter: var(--filter_white) }
-    #menu #back.icon {
-        display: block;
-        position: absolute;
-        inset: 4rem auto auto 2rem;
-        pointer-events: auto !important;
-        filter: var(--filter_main);
-    }
+    #menu .icon:not(#back) { filter: var(--filter_white) }
+    #menu > #back { display: block }
+    #menu #panel > #greeting > #back { display: none }
     #menu[aria-modal="false"] #hamburger.icon { filter: var(--filter_main) }
     #menu[aria-modal="true"] #hamburger.icon { filter: var(--filter_white); transform: rotate(630deg); }
     #menu #hamburger.icon {
