@@ -17,6 +17,12 @@
     align-items: center;
     row-gap: 4rem;
 }
+#signup form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
+}
 #signup input, #signup button {
     width: 100%;
 }

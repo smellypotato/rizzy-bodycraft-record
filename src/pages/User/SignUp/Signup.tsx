@@ -58,32 +58,36 @@ export const SignUp = () => {
             { !verifiedEmail &&
                 <section id="verify_email">
                     <h3>Verify your email</h3>
-                    <input type="text" value={ email } placeholder="Email" onChange={ onInputEmail } />
-                    <button onClick={ onVerify }>Verify</button>
-                    <button onClick={ onBackToLogin }>Back to Login</button>
+                    <form onSubmit={ (e) => { e.preventDefault(); onVerify(); } }>
+                        <input type="text" value={ email } placeholder="Email" onChange={ onInputEmail } />
+                        <button type="submit">Verify</button>
+                        <button type="button" onClick={ onBackToLogin }>Back to Login</button>
+                    </form>
                 </section>
             }
             { verifiedEmail &&
                 <section id="signup_details">
                     <h3>Sign up</h3>
-                    <div id="signup_row">
-                        <div>Email:</div>
-                        <div>{ email }</div>
-                    </div>
-                    <div id="signup_row">
-                        <div>Name:</div>
-                        <input type="text" value={ name } placeholder="Name" onChange={ onInputName } />
-                    </div>
-                    <div id="signup_row">
-                        <div>Password:</div>
-                        <input type="password" value={ password } placeholder="Password" onChange={ onInputPassword } />
-                    </div>
-                    <div id="signup_row">
-                        <div>Confirm Password:</div>
-                        <input type="password" value={ confirmPassword } placeholder="Confirm Password" onChange={ onInputConfirmPassword } />
-                    </div>
-                    <button onClick={ onSignup }>Sign Up</button>
-                    <button onClick={ onBackToLogin }>Back to Login</button>
+                    <form>
+                        <div id="signup_row">
+                            <div>Email:</div>
+                            <div>{ email }</div>
+                        </div>
+                        <div id="signup_row">
+                            <div>Name:</div>
+                            <input type="text" value={ name } placeholder="Name" onChange={ onInputName } />
+                        </div>
+                        <div id="signup_row">
+                            <div>Password:</div>
+                            <input type="password" value={ password } placeholder="Password" onChange={ onInputPassword } />
+                        </div>
+                        <div id="signup_row">
+                            <div>Confirm Password:</div>
+                            <input type="password" value={ confirmPassword } placeholder="Confirm Password" onChange={ onInputConfirmPassword } />
+                        </div>
+                        <button onClick={ onSignup }>Sign Up</button>
+                        <button onClick={ onBackToLogin }>Back to Login</button>
+                    </form>
                     <div>If you do not complete the sign up procedure now, you will need to request a new email link to login again</div>
                 </section>
             }

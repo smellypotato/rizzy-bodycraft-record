@@ -31,7 +31,6 @@ export const StudentList = () => {
             console.log((e as FirebaseError).code);
             setModal(<ErrorBox msg={ (e as FirebaseError).code } />);
         }
-        // await Firebase.instance.removePendingAccount(id);
     }, []);
 
     const declinePending = useCallback(async (id: string) => {
