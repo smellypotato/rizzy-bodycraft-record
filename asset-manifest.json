@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/rizzy-bodycraft-record/static/css/main.eb84aa68.css",
-    "main.js": "/rizzy-bodycraft-record/static/js/main.5d960f79.js",
+    "main.css": "/rizzy-bodycraft-record/static/css/main.a458cbd7.css",
+    "main.js": "/rizzy-bodycraft-record/static/js/main.101e847e.js",
     "static/media/background.jpeg": "/rizzy-bodycraft-record/static/media/background.a7bcaa6889b5a63c5065.jpeg",
     "index.html": "/rizzy-bodycraft-record/index.html",
     "static/media/circle.svg": "/rizzy-bodycraft-record/static/media/circle.99c69882b11e858f59dd.svg",
     "static/media/bin.svg": "/rizzy-bodycraft-record/static/media/bin.4fea9eba9cba4058d824.svg",
     "static/media/logout.svg": "/rizzy-bodycraft-record/static/media/logout.0e0c5b6e068ed8cab9e6.svg",
     "static/media/account.svg": "/rizzy-bodycraft-record/static/media/account.085d386a03d620ee8ccc.svg",
+    "static/media/back.svg": "/rizzy-bodycraft-record/static/media/back.3fa3cf87c3f84ddfcf08.svg",
     "static/media/account_list.svg": "/rizzy-bodycraft-record/static/media/account_list.87d2daa9fac3e51805f3.svg",
     "static/media/pen.svg": "/rizzy-bodycraft-record/static/media/pen.42479fc970b1ab3386bb.svg",
     "static/media/record.svg": "/rizzy-bodycraft-record/static/media/record.48ef429c5686ae68ae4f.svg",
@@ -15,11 +16,11 @@
     "static/media/menu.svg": "/rizzy-bodycraft-record/static/media/menu.806b46a44664e28fe8c1.svg",
     "static/media/home.svg": "/rizzy-bodycraft-record/static/media/home.f5dcc99575de753e7739.svg",
     "static/media/arrow_down.svg": "/rizzy-bodycraft-record/static/media/arrow_down.7a6fb7813ea3115ed4ec.svg",
-    "main.eb84aa68.css.map": "/rizzy-bodycraft-record/static/css/main.eb84aa68.css.map",
-    "main.5d960f79.js.map": "/rizzy-bodycraft-record/static/js/main.5d960f79.js.map"
+    "main.a458cbd7.css.map": "/rizzy-bodycraft-record/static/css/main.a458cbd7.css.map",
+    "main.101e847e.js.map": "/rizzy-bodycraft-record/static/js/main.101e847e.js.map"
   },
   "entrypoints": [
-    "static/css/main.eb84aa68.css",
-    "static/js/main.5d960f79.js"
+    "static/css/main.a458cbd7.css",
+    "static/js/main.101e847e.js"
   ]
 }
