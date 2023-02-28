@@ -108,14 +108,18 @@ export default class Firebase {
 
     }
 
-    async approvePendingAccount(email: string) {
+    async approvePendingAccount(email: string): Promise<Response> {
         const actionCodeSettings = {
             // URL you want to redirect back to. The domain (www.example.com) for this
             // URL must be in the authorized domains list in the Firebase Console.
-            url: 'http://localhost:3000',
+            url: `${window.location.origin}/rizzy-bodycraft-record`,
             handleCodeInApp: true
         };
-        await sendSignInLinkToEmail(this.auth, email, actionCodeSettings);
+        return sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(async () => {
+            let application = await getDocs(query(collection(this.firestore, COLLECTION.APPLICATION).withConverter(applicationConverter), where("email", "==", email)))
+            application.docs.forEach(app => deleteDoc(app.ref));
+            return { success: true }
+        }).catch(e => { return { success: false, message: (e as FirebaseError).code } });
     }
 
     isAnnoymousAccount() {
