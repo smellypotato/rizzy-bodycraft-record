@@ -32,12 +32,14 @@ export const Register = () => {
             <Title />
             <section>
                 <h3>Register</h3>
-                <input type="text" value={ name } placeholder="Name" onChange={ onInputName } />
-                <input type="text" value={ email } placeholder="Email" onChange={ onInputEmail } />
-                <div id="buttons">
-                    <button id="submit" onClick={ onSubmit }>Register</button>
-                    <button id="back" onClick={ () => navigate(-1) }>Back</button>
-                </div>
+                <form onSubmit={ (e) => { e.preventDefault(); onSubmit(); } }>
+                    <input type="text" value={ name } placeholder="Name" onChange={ onInputName } />
+                    <input type="text" value={ email } placeholder="Email" onChange={ onInputEmail } />
+                    <div id="buttons">
+                        <button type="submit" id="submit">Register</button>
+                        <button type="button" id="back" onClick={ () => navigate(-1) }>Back</button>
+                    </div>
+                </form>
             </section>
         </main>
     )

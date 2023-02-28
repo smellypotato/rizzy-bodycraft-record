@@ -30,13 +30,15 @@ export const Login = () => {
             <Title />
             <section>
                 <h3>Login</h3>
-                <input type="text" value={ username } placeholder="Username" onChange={ onInputUsername } />
-                <input type="text" value={ password } placeholder="Password" onChange={ onInputPassword } />
-                <a id="login-forget">Forget password?</a>
-                <div id="login-buttons">
-                    <button id="user" onClick={ onLogin }>Login</button>
-                    <button id="register" onClick={ () => navigate(PATH.REGISTER) }>Sign Up</button>
-                </div>
+                <form onSubmit={ (e) => { e.preventDefault(); onLogin(); } }>
+                    <input type="text" value={ username } placeholder="Username" onChange={ onInputUsername } />
+                    <input type="text" value={ password } placeholder="Password" onChange={ onInputPassword } />
+                    <a id="login-forget">Forget password?</a>
+                    <div id="login-buttons">
+                        <button type="submit" id="user">Login</button>
+                        <button type="button" id="register" onClick={ () => navigate(PATH.REGISTER) }>Sign Up</button>
+                    </div>
+                </form>
             </section>
         </main>
     )
