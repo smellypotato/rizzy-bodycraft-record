@@ -36,7 +36,7 @@
     color: var(--color_white);
     background-color: var(--color_prim);
 }
-#signup #signup_details #signup_row {
+#signup form #signup_row {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -44,6 +44,6 @@
     font-size: 4rem;
     align-items: center;
 }
-#signup #signup_details #signup_row input {
+#signup form #signup_row input {
     width: 100%;
 }

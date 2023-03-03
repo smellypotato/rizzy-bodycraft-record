@@ -3,7 +3,6 @@ import { Loading } from "../../../components/Loading/Loading";
 import { ErrorBox } from "../../../components/ErrorBox/ErrorBox";
 import { Title } from "../../../components/Title/Title";
 import Firebase from "../../../firebase";
-import { FirebaseError } from "@firebase/util";
 import { SetModalContext } from "../../../hooks/contexts";
 import { PendingApplcation } from "../../../type";
 import "./StudentList.css";
@@ -15,7 +14,11 @@ export const StudentList = () => {
     const [pendingList, setPendingList] = useState<Array<PendingApplcation>>([]);
 
     useEffect(() => {
-        let unSubscribePendingAccountChange = Firebase.instance.onPendingAccountsChange(setPendingList);
+        setModal(<Loading msg="Getting student list..."/>)
+        let unSubscribePendingAccountChange = Firebase.instance.onPendingAccountsChange((pending) => {
+            setPendingList(pending);
+            setModal();
+        });
         return () => {
             unSubscribePendingAccountChange();
         }
@@ -24,12 +27,12 @@ export const StudentList = () => {
     const approvePending = useCallback(async (application: PendingApplcation) => {
         setModal(<Loading msg="正在批准用戶..."/>);
         try {
-            await Firebase.instance.approvePendingAccount(application.email);
+            let res = await Firebase.instance.approvePendingAccount(application.email);
+            if (!res.success) throw new Error(res.message);
             setModal();
         }
         catch (e) {
-            console.log((e as FirebaseError).code);
-            setModal(<ErrorBox msg={ (e as FirebaseError).code } />);
+            setModal(<ErrorBox msg={ (e as Error).message } />);
         }
     }, []);
 

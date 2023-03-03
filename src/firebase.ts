@@ -53,7 +53,6 @@ export default class Firebase {
         return updatePassword(this.auth.currentUser!, password).then(() => {
             try {
                 this.updateUserProfile({ id: this.auth.currentUser!.uid, email, name });
-                this.login({ email, password });
                 return { success: true, message: this.auth.currentUser!.uid };
             }
             catch (e) { return { success: false, message: (e as FirebaseError).code } };
@@ -88,7 +87,7 @@ export default class Firebase {
     }
 
     async logout() {
-        await signOut(Firebase.instance.auth);
+        await signOut(Firebase.instance.auth).catch((e) => console.log(e));
     }
 
     onAuthStateChanged(callback: (user: User | null) => void) {
@@ -120,6 +119,9 @@ export default class Firebase {
             application.docs.forEach(app => deleteDoc(app.ref));
             return { success: true }
         }).catch(e => { return { success: false, message: (e as FirebaseError).code } });
+        // auth/invalid-email
+        // auth/quota-exceeded
+
     }
 
     isAnnoymousAccount() {
@@ -138,7 +140,6 @@ export default class Firebase {
             getDocs(query(collection(this.firestore, COLLECTION.APPLICATION), where("email", "==", email))),
             getDoc(doc(this.firestore, COLLECTION.USER_PROFILE, email))
         ]);
-        console.log(existingAccount);
         if (existingApplication.empty && !existingAccount.exists()) {
             let obj = {
                 id: "",
